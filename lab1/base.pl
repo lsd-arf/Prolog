@@ -51,3 +51,6 @@ parent(svetlana_c, elena_c).
 
 parent(olga_k, elena_k).
 parent(andrei_k, elena_k).
+
+child(X,Y):-parent(Y,X).
+children(Y):-child(X,Y),write(X),write(" "),fail.
