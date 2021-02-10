@@ -5,6 +5,9 @@ man(vladimir_c).
 man(alexander_c).
 man(andrei_k).
 man(vladislav_c).
+man(sergei_n).
+man(victor_t).
+man(alexei_k).
 
 woman(galina_g).
 woman(eudokia_c).
@@ -19,6 +22,9 @@ woman(anna_t).
 woman(anastasia_c).
 woman(elena_c).
 woman(elena_k).
+woman(ekaterina_n).
+woman(elizaveta_t).
+woman(marina_k).
 
 parent(galina_g, valentina_a).
 parent(grigory_g, valentina_a).
