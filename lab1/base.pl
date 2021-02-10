@@ -67,8 +67,10 @@ parent(svetlana_c, elena_c).
 parent(olga_k, elena_k).
 parent(andrei_k, elena_k).
 
+c_write(X):-write(X),write(" ").
+
 child(X,Y):-parent(Y,X).
-children(Y):-child(X,Y),write(X),write(" ").
+children(Y):-child(X,Y),c_write(X),fail.
 
 mother(X,Y):-parent(X,Y),woman(X).
 mother(X):-mother(Y,X),write(Y).
@@ -77,13 +79,16 @@ daughter(X,Y):-child(X,Y),woman(X).
 daughter(X):-daughter(Y,X),write(Y).
 
 brother(X,Y):-parent(Z,X),parent(Z,Y),man(X),man(Z),not(X=Y).
-brothers(X):-brother(Y,X),write(Y),write(" "),fail.
+brothers(X):-brother(Y,X),c_write(Y),fail.
 
 husband(X,Y):-parent(X,Z),parent(Y,Z),man(X),not(X=Y).
 husband(X):-husband(Y,X),write(Y).
 
 grand_pa(X,Y):-parent(X,Z),parent(Z,Y),man(X).
-grand_pas(X):-grand_pa(Y,X),write(Y),write(" "),fail.
+grand_pas(X):-grand_pa(Y,X),c_write(Y),fail.
 
 b_s(X,Y):-parent(Z,X),parent(Z,Y),man(Z),not(X=Y).
-b_s(X):-b_s(Y,X),write(Y),write(" "),fail.
+b_s(X):-b_s(Y,X),c_write(Y),fail.
+
+grand_da(X,Y):-daughter(X,Z),child(Z,Y).
+grand_dats(X):-grand_da(Y,X),c_write(Y),fail.
