@@ -60,3 +60,6 @@ mother(X):-mother(Y,X),write(Y).
 
 daughter(X,Y):-child(X,Y),woman(X).
 daughter(X):-daughter(Y,X),write(Y).
+
+brother(X,Y):-parent(Z,X),parent(Z,Y),man(X),man(Z),not(X=Y).
+brothers(X):-brother(Y,X),write(Y),write(" "),fail.
