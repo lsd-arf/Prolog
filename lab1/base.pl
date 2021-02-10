@@ -84,3 +84,6 @@ husband(X):-husband(Y,X),write(Y).
 
 grand_pa(X,Y):-parent(X,Z),parent(Z,Y),man(X).
 grand_pas(X):-grand_pa(Y,X),write(Y),write(" "),fail.
+
+b_s(X,Y):-parent(Z,X),parent(Z,Y),man(Z),not(X=Y).
+b_s(X):-b_s(Y,X),write(Y),write(" "),fail.
