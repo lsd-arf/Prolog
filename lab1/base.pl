@@ -33,12 +33,21 @@ parent(grigory_g, ludmila_g).
 parent(galina_g, natalia_c).
 parent(grigory_g, natalia_c).
 
+parent(sergei_n, anatoly_n).
+parent(ekaterina_n, anatoly_n).
+
 parent(eudokia_c, vladimir_c).
 parent(ivan_c, vladimir_c).
 parent(eudokia_c, alexander_c).
 parent(ivan_c, alexander_c).
 parent(eudokia_c, olga_k).
 parent(ivan_c, olga_k).
+
+parent(victor_t, svetlana_c).
+parent(elizaveta_t, svetlana_c).
+
+parent(alexei_k, andrei_k).
+parent(marina_k, andrei_k).
 
 parent(anatoly_n, olga_m).
 parent(ludmila_g, olga_m).
@@ -69,3 +78,6 @@ daughter(X):-daughter(Y,X),write(Y).
 
 brother(X,Y):-parent(Z,X),parent(Z,Y),man(X),man(Z),not(X=Y).
 brothers(X):-brother(Y,X),write(Y),write(" "),fail.
+
+husband(X,Y):-parent(X,Z),parent(Y,Z),man(X),not(X=Y).
+husband(X):-husband(Y,X),write(Y).
