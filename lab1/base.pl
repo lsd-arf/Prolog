@@ -94,3 +94,5 @@ grand_da(X,Y):-daughter(X,Z),child(Z,Y).
 grand_dats(X):-grand_da(Y,X),c_write(Y),fail.
 
 grand_pa_and_son(X,Y):-( grand_pa(X,Y),man(Y) )|( grand_pa(Y,X),man(X) ).
+
+grand_ma_and_da(X,Y):-( grand_da(X,Y),woman(Y) )|( grand_da(Y,X),woman(X) ).
