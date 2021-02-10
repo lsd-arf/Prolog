@@ -99,3 +99,6 @@ grand_ma_and_da(X,Y):-( grand_da(X,Y),woman(Y) )|( grand_da(Y,X),woman(X) ).
 
 uncle(X,Y):-brother(X,A),parent(A,Y).
 uncles(X):-uncle(Y,X),c_write(Y),fail.
+
+niece(X,Y):-daughter(X,Z),b_s(Z,Y).
+nieces(X):-niece(Y,X),c_write(Y),fail.
