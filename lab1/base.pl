@@ -81,3 +81,6 @@ brothers(X):-brother(Y,X),write(Y),write(" "),fail.
 
 husband(X,Y):-parent(X,Z),parent(Y,Z),man(X),not(X=Y).
 husband(X):-husband(Y,X),write(Y).
+
+grand_pa(X,Y):-parent(X,Z),parent(Z,Y),man(X).
+grand_pas(X):-grand_pa(Y,X),write(Y),write(" "),fail.
