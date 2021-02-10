@@ -69,6 +69,3 @@ daughter(X):-daughter(Y,X),write(Y).
 
 brother(X,Y):-parent(Z,X),parent(Z,Y),man(X),man(Z),not(X=Y).
 brothers(X):-brother(Y,X),write(Y),write(" "),fail.
-
-husband(X,Y):-parent(X,Z),parent(Y,Z),man(X),not(X=Y).
-husband(X):-husband(Y,X),write(Y).
