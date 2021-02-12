@@ -26,6 +26,11 @@ woman(ekaterina_n).
 woman(elizaveta_t).
 woman(marina_k).
 
+c_write(X):-write(X),write(" ").
+
+mans(X):-man(X),c_write(X),fail.
+womans(X):-woman(X),c_write(X),fail.
+
 parent(galina_g, valentina_a).
 parent(grigory_g, valentina_a).
 parent(galina_g, ludmila_g).
@@ -66,8 +71,6 @@ parent(svetlana_c, elena_c).
 
 parent(olga_k, elena_k).
 parent(andrei_k, elena_k).
-
-c_write(X):-write(X),write(" ").
 
 child(X,Y):-parent(Y,X).
 children(Y):-child(X,Y),c_write(X),fail.
