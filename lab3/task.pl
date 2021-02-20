@@ -29,4 +29,7 @@ sumOfDigits(Num, Sum) :- ModOfNum is Num mod 10, Num1 is Num div 10, sumOfDigits
 
 sumOfDigits(0, CurSum, CurSum) :- !.
 sumOfDigits(Num, CurSum, Sum) :- ModOfNum is Num mod 10, Num1 is Num div 10, CurSum1 is CurSum + ModOfNum, sumOfDigits(Num1, CurSum1, Sum).
-sumOfDigitsNumber(Num, Sum) :- sumOfDigits(Num, 0, Sum).
+sumOfDigitsNum(Num, Sum) :- sumOfDigits(Num, 0, Sum).
+
+minDigit(Min, Min) :- Min div 10 =:= 0, !.
+minDigit(Num, Min) :- Min2 is Num mod 10, Num1 is Num div 10, minDigit(Num1, Min1), (Min1 < Min2 -> Min is Min1; Min is Min2).
