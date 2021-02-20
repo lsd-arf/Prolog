@@ -23,7 +23,6 @@ fib(2, CurX1, CurX2, CurX2) :- !.
 fib(N, CurX1, CurX2, X) :- CurX3 is CurX1 + CurX2, N1 is N - 1, fib(N1, CurX2, CurX3, X).
 fibonacci(N, X) :- fib(N, 1, 1, X).
 
-% если во 2 предикате в начале добавить Sum1 is 0, то даст false, почему?
 sumOfDigits(0, 0) :- !.
 sumOfDigits(Num, Sum) :- ModOfNum is Num mod 10, Num1 is Num div 10, sumOfDigits(Num1, Sum1), Sum is Sum1 + ModOfNum.
 
@@ -33,3 +32,7 @@ sumOfDigitsNum(Num, Sum) :- sumOfDigits(Num, 0, Sum).
 
 minDigit(Min, Min) :- Min div 10 =:= 0, !.
 minDigit(Num, Min) :- Min2 is Num mod 10, Num1 is Num div 10, minDigit(Num1, Min1), (Min1 < Min2 -> Min is Min1; Min is Min2).
+
+minDigit(0, CurMin, CurMin) :- !.
+minDigit(Num, CurMin, Min) :- CurMin1 is Num mod 10, Num1 is Num div 10, (CurMin1 < CurMin -> CurMin2 is CurMin1; CurMin2 is CurMin), minDigit(Num1, CurMin2, Min).
+minDigitN(Num, Min) :- minDigit(Num, 10, Min).
