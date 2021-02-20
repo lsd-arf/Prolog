@@ -26,3 +26,7 @@ fibonacci(N, X) :- fib(N, 1, 1, X).
 % если во 2 предикате в начале добавить Sum1 is 0, то даст false, почему?
 sumOfDigits(0, 0) :- !.
 sumOfDigits(Num, Sum) :- ModOfNum is Num mod 10, Num1 is Num div 10, sumOfDigits(Num1, Sum1), Sum is Sum1 + ModOfNum.
+
+sumOfDigits(0, CurSum, CurSum) :- !.
+sumOfDigits(Num, CurSum, Sum) :- ModOfNum is Num mod 10, Num1 is Num div 10, CurSum1 is CurSum + ModOfNum, sumOfDigits(Num1, CurSum1, Sum).
+sumOfDigitsNumber(Num, Sum) :- sumOfDigits(Num, 0, Sum).
