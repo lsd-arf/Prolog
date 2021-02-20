@@ -22,3 +22,7 @@ fib(1, CurX1, CurX2, CurX2) :- !.
 fib(2, CurX1, CurX2, CurX2) :- !.
 fib(N, CurX1, CurX2, X) :- CurX3 is CurX1 + CurX2, N1 is N - 1, fib(N1, CurX2, CurX3, X).
 fibonacci(N, X) :- fib(N, 1, 1, X).
+
+% если во 2 предикате в начале добавить Sum1 is 0, то даст false, почему?
+sumOfDigits(0, 0) :- !.
+sumOfDigits(Num, Sum) :- ModOfNum is Num mod 10, Num1 is Num div 10, sumOfDigits(Num1, Sum1), Sum is Sum1 + ModOfNum.
