@@ -16,7 +16,7 @@ fact(N, X) :- N1 is N - 1, fact(N1, X1), X is X1 * N.
 % рекурсия вниз
 fact(0, CurX, CurX) :- !.
 fact(N, CurX, X) :- CurX1 is CurX * N, N1 is N - 1, fact(N1, CurX1, X).
-factorial(N, X) :- fact(N, 1, X).
+factN(N, X) :- fact(N, 1, X).
 
 % Задание 5
 fib(1, 1) :- !.
@@ -27,16 +27,16 @@ fib(N, X) :- N1 is N - 1, N2 is N - 2, fib(N1, X1), fib(N2, X2), X is X1 + X2.
 fib(1, _, CurX2, CurX2) :- !.
 fib(2, _, CurX2, CurX2) :- !.
 fib(N, CurX1, CurX2, X) :- CurX3 is CurX1 + CurX2, N1 is N - 1, fib(N1, CurX2, CurX3, X).
-fibonacci(N, X) :- fib(N, 1, 1, X).
+fibN(N, X) :- fib(N, 1, 1, X).
 
 % Задание 7
 sumOfDigits(0, 0) :- !.
-sumOfDigits(Num, Sum) :- ModOfNum is Num mod 10, Num1 is Num div 10, sumOfDigits(Num1, Sum1), Sum is Sum1 + ModOfNum.
+sumOfDigits(Num, Sum) :- Mod is Num mod 10, Num1 is Num div 10, sumOfDigits(Num1, Sum1), Sum is Sum1 + Mod.
 
 % Задание 8
 sumOfDigits(0, CurSum, CurSum) :- !.
-sumOfDigits(Num, CurSum, Sum) :- ModOfNum is Num mod 10, Num1 is Num div 10, CurSum1 is CurSum + ModOfNum, sumOfDigits(Num1, CurSum1, Sum).
-sumOfDigitsNum(Num, Sum) :- sumOfDigits(Num, 0, Sum).
+sumOfDigits(Num, CurSum, Sum) :- Mod is Num mod 10, Num1 is Num div 10, CurSum1 is CurSum + Mod, sumOfDigits(Num1, CurSum1, Sum).
+sumOfDigitsN(Num, Sum) :- sumOfDigits(Num, 0, Sum).
 
 % Задание 9
 minDigit(Min, Min) :- Min div 10 =:= 0, !.
@@ -89,3 +89,25 @@ sumOfDelsU(Num, Sum) :- sumOfDels(Num, Num, Sum).
 sumOfDels(_, CurDel, CurSum, CurSum) :- CurDel < 4, !.
 sumOfDels(Num, CurDel, CurSum, Sum) :- CurDel1 is CurDel - 1, ((Num mod CurDel =:= 0, not(simpleNumN(CurDel))) -> CurSum1 is CurSum + CurDel; CurSum1 is CurSum), sumOfDels(Num, CurDel1, CurSum1, Sum).
 sumOfDelsD(Num, Sum) :- sumOfDels(Num, Num, 0, Sum).
+
+% Задание 15 % Пример: (10, X) % Ответ: 3 % Числа: 4, 6, 8
+% блок: сумма простых цифр числа
+sumOfSimpleDigits(0, CurSum, CurSum) :- !.
+sumOfSimpleDigits(Num, CurSum, Sum) :- Mod is Num mod 10, Num1 is Num div 10, (simpleNumN(Mod) -> CurSum1 is CurSum + Mod; CurSum1 is CurSum), sumOfSimpleDigits(Num1, CurSum1, Sum).
+sumOfSimpleDigitsN(Num, Sum) :- sumOfDigits(Num, 0, Sum).
+
+% блок: взаимно простые числа
+coprimeNums(Num1, Num2) :- nodNumsN(Num1, Num2, Nod), Nod = 1.
+
+% блок: общая задача
+countNumsT15(_, 0, CurCount, CurCount) :- !.
+countNumsT15(Num, CurDel, CurCount, Count) :- 
+((
+not(Num mod CurDel =:= 0), 
+not(coprimeNums(Num, CurDel)), 
+sumOfSimpleDigitsN(Num, SumOfSD),
+coprimeNums(SumOfSD, CurDel)
+) -> CurCount1 is CurCount + 1; CurCount1 is CurCount
+), CurDel1 is CurDel - 1,
+countNumsT15(Num, CurDel1, CurCount1, Count).
+countNumsT15N(Num, Count) :- countNumsT15(Num, Num, 0, Count).
