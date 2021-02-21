@@ -33,6 +33,7 @@ sumOfDigitsNum(Num, Sum) :- sumOfDigits(Num, 0, Sum).
 minDigit(Min, Min) :- Min div 10 =:= 0, !.
 minDigit(Num, Min) :- Min2 is Num mod 10, Num1 is Num div 10, minDigit(Num1, Min1), (Min1 < Min2 -> Min is Min1; Min is Min2).
 
+minDigit(0, 10, 0) :- !.
 minDigit(0, CurMin, CurMin) :- !.
 minDigit(Num, CurMin, Min) :- CurMin1 is Num mod 10, Num1 is Num div 10, (CurMin1 < CurMin -> CurMin2 is CurMin1; CurMin2 is CurMin), minDigit(Num1, CurMin2, Min).
 minDigitN(Num, Min) :- minDigit(Num, 10, Min).
@@ -40,3 +41,8 @@ minDigitN(Num, Min) :- minDigit(Num, 10, Min).
 numDigits(Num, Count) :- Num < 3, Count is 1, !.
 numDigits(Num, Count) :- Num >= 3, Num < 10, Count is 0, !.
 numDigits(Num, Count) :- Mod is Num mod 10, Num1 is Num div 10, numDigits(Num1, Count1), (Mod < 3 -> Count is Count1 + 1; Count is Count1).
+
+numDigits(Num, CurCount, Count) :- Num < 3, Count is CurCount + 1, !.
+numDigits(Num, CurCount, Count) :- Num >= 3, Num < 10, Count is CurCount, !.
+numDigits(Num, CurCount, Count) :- Mod is Num mod 10, Num1 is Num div 10, (Mod < 3 -> CurCount1 is CurCount + 1; CurCount1 is CurCount), numDigits(Num1, CurCount1, Count).
+numDigitsN(Num, Count) :- numDigits(Num, 0, Count).
