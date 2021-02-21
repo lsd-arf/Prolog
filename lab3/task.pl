@@ -36,3 +36,7 @@ minDigit(Num, Min) :- Min2 is Num mod 10, Num1 is Num div 10, minDigit(Num1, Min
 minDigit(0, CurMin, CurMin) :- !.
 minDigit(Num, CurMin, Min) :- CurMin1 is Num mod 10, Num1 is Num div 10, (CurMin1 < CurMin -> CurMin2 is CurMin1; CurMin2 is CurMin), minDigit(Num1, CurMin2, Min).
 minDigitN(Num, Min) :- minDigit(Num, 10, Min).
+
+numDigits(Num, Count) :- Num < 3, Count is 1, !.
+numDigits(Num, Count) :- Num >= 3, Num < 10, Count is 0, !.
+numDigits(Num, Count) :- Mod is Num mod 10, Num1 is Num div 10, numDigits(Num1, Count1), (Mod < 3 -> Count is Count1 + 1; Count is Count1).
