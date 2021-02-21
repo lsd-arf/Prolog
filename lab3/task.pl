@@ -50,9 +50,9 @@ minDigitN(Num, Min) :- minDigit(Num, 10, Min).
 
 % Задание 11
 % рекурсия вверх
-numDigits(Num, Count) :- Num < 3, Count is 1, !.
-numDigits(Num, Count) :- Num >= 3, Num < 10, Count is 0, !.
-numDigits(Num, Count) :- Mod is Num mod 10, Num1 is Num div 10, numDigits(Num1, Count1), (Mod < 3 -> Count is Count1 + 1; Count is Count1).
+countDigits(Num, Count) :- Num < 3, Count is 1, !.
+countDigits(Num, Count) :- Num >= 3, Num < 10, Count is 0, !.
+countDigits(Num, Count) :- Mod is Num mod 10, Num1 is Num div 10, countDigits(Num1, Count1), (Mod < 3 -> Count is Count1 + 1; Count is Count1).
 
 % рекурсия вниз
 countDigits(Num, CurCount, Count) :- Num < 3, Count is CurCount + 1, !.
@@ -78,3 +78,9 @@ simpleNumN(Num) :- CurDel is Num - 1, simpleNum(Num, CurDel, _).
 countDels(_, 0, CurCount, CurCount) :- !.
 countDels(Num, CurDel, CurCount, Count) :- (Num mod CurDel =:= 0 -> CurCount1 is CurCount + 1; CurCount1 is CurCount), CurDel1 is CurDel - 1, countDels(Num, CurDel1, CurCount1, Count).
 countDelsN(Num, Count) :- countDels(Num, Num, 0, Count).
+
+% Задание 14
+% рекурсия вверх
+sumOfDels(_, CurDel, 0) :- CurDel < 4, !.
+sumOfDels(Num, CurDel, Sum) :- CurDel1 is CurDel - 1, sumOfDels(Num, CurDel1, Sum1), ((Num mod CurDel =:= 0, not(simpleNumN(CurDel))) -> Sum is Sum1 + CurDel; Sum is Sum1).
+sumOfDelsN(Num, Sum) :- sumOfDels(Num, Num, Sum).
