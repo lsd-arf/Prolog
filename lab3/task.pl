@@ -83,4 +83,9 @@ countDelsN(Num, Count) :- countDels(Num, Num, 0, Count).
 % рекурсия вверх
 sumOfDels(_, CurDel, 0) :- CurDel < 4, !.
 sumOfDels(Num, CurDel, Sum) :- CurDel1 is CurDel - 1, sumOfDels(Num, CurDel1, Sum1), ((Num mod CurDel =:= 0, not(simpleNumN(CurDel))) -> Sum is Sum1 + CurDel; Sum is Sum1).
-sumOfDelsN(Num, Sum) :- sumOfDels(Num, Num, Sum).
+sumOfDelsU(Num, Sum) :- sumOfDels(Num, Num, Sum).
+
+% рекурсия вниз
+sumOfDels(_, CurDel, CurSum, CurSum) :- CurDel < 4, !.
+sumOfDels(Num, CurDel, CurSum, Sum) :- CurDel1 is CurDel - 1, ((Num mod CurDel =:= 0, not(simpleNumN(CurDel))) -> CurSum1 is CurSum + CurDel; CurSum1 is CurSum), sumOfDels(Num, CurDel1, CurSum1, Sum).
+sumOfDelsD(Num, Sum) :- sumOfDels(Num, Num, 0, Sum).
