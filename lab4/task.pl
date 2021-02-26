@@ -23,3 +23,7 @@ write_ls([H|T]) :-
 sum_ls_down([], Sum, Sum) :- !.
 sum_ls_down([H|T], CurSum, Sum) :- CurSum1 is CurSum + H, sum_ls_down(T, CurSum1, Sum).
 sum_ls_down([H|T], Sum) :- sum_ls_down([H|T], 0, Sum).
+
+% Задание 3
+sum_ls_up([], 0) :- !.
+sum_ls_up([H|T], Sum) :- sum_ls_up(T, Sum1), Sum is Sum1 + H.
