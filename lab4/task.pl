@@ -93,9 +93,9 @@ rm_equals(List, El, List) :- not(in_ls(List, El)), !.
 rm_equals(List, El, NewList) :- ls_num_el(List, El, Num), rm_el(List, Num, List1), rm_equals(List1, El, NewList).
 
 % Задание 14
-% не работает
-%uni_els(List, [], List, List) :- !.
-%uni_els(List, [H|T], CurList, NewList) :- rm_equals(T, H, NewList1), append_ls(CurList, [H], CurList1), uni_els%(List, NewList1, CurList1, NewList).
-
 uni_els([]) :- !.
 uni_els([H|T]) :- not(in_ls(T, H)), uni_els(T).
+
+% Задание 15
+uni_list([], []) :- !.
+uni_list([H|T], List) :- rm_equals(T, H, RmList), uni_list(RmList, List1), append_ls([H], List1, List).
