@@ -70,7 +70,10 @@ in_ls([H|_], H) :- !.
 in_ls([_|T], El) :- in_ls(T, El).
 
 % Задание 10
-% CurList изначально пустой []
 reverse_ls([], InvList, InvList) :- !.
 reverse_ls([H|T], CurList, InvList) :- reverse_ls(T, [H|CurList], InvList).
 reverse_ls(List, InvList) :- reverse_ls(List, [], InvList).
+
+% Задание 11
+p([], _) :- !.
+p([H1|T1], [H|T]) :- (H1 = H -> p(T1, T); p([H1|T1], T)).
