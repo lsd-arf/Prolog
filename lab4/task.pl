@@ -70,15 +70,24 @@ in_ls([H|_], H) :- !.
 in_ls([_|T], El) :- in_ls(T, El).
 
 % Задание 10
-reverse_ls([], InvList, InvList) :- !.
-reverse_ls([H|T], CurList, InvList) :- reverse_ls(T, [H|CurList], InvList).
-reverse_ls(List, InvList) :- reverse_ls(List, [], InvList).
+rev_ls([], InvList, InvList) :- !.
+rev_ls([H|T], CurList, InvList) :- rev_ls(T, [H|CurList], InvList).
+rev_ls(List, InvList) :- rev_ls(List, [], InvList).
 
 % Задание 11
 p([], _) :- !.
 p([SubH|SubT], [H|T]) :- (SubH = H -> p(SubT, T); p([SubH|SubT], T)).
 
 % Задание 12
-remove_el([_|T], CurList, Num, Num, NewList) :- append_ls(CurList, T, NewList), !.
-remove_el([H|T], CurList, CurNum, Num, NewList) :- append_ls(CurList, [H], CurList1), CurNum1 is CurNum + 1, remove_el(T, CurList1, CurNum1, Num, NewList).
-remove_el(List, Num, NewList) :- remove_el(List, [], 1, Num, NewList).
+rm_el([_|T], CurList, Num, Num, NewList) :- append_ls(CurList, T, NewList), !.
+rm_el([H|T], CurList, CurNum, Num, NewList) :- append_ls(CurList, [H], CurList1), CurNum1 is CurNum + 1, rm_el(T, CurList1, CurNum1, Num, NewList).
+rm_el(List, Num, NewList) :- rm_el(List, [], 1, Num, NewList).
+
+% Задание 13
+% количество элементов в списке
+count_els([], Num, Num) :- !.
+count_els([_|T], CurNum, Num) :- CurNum1 is CurNum + 1, count_els(T, CurNum1, Num).
+
+% удаление одинаковых с заданным элементов
+rm_equals(List, El, List) :- not(in_ls(List, El)), !.
+rm_equals(List, El, NewList) :- ls_num_el(List, El, Num), rm_el(List, Num, List1), rm_equals(List1, El, NewList).
