@@ -50,3 +50,8 @@ min_list_up([H|T], CurMin, Min) :- (H < CurMin -> CurMin1 is H; CurMin1 is CurMi
 min_list_up([], _) :- write("List isn't exist"), fail, !.
 min_list_up([H], Min) :- Min is H, !.
 min_list_up([H|T], Min) :- min_list_up(T, H, Min).
+
+% Задание 7
+min_list_down([], Min, Min) :- !.
+min_list_down([H|T], CurMin, Min) :- (H < CurMin -> CurMin1 is H; CurMin1 is CurMin), min_list_down(T, CurMin1, Min).
+min_list_down([H|T], Min) :- min_list_down(T, H, Min).
