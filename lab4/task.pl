@@ -34,10 +34,6 @@ ls_num_el([H|T], El, CurNum, Num) :- CurNum1 is CurNum + 1, ((El = H) -> Num is 
 ls_num_el([H|T], El, Num) :- ls_num_el([H|T], El, 0, Num).
 
 % Задание 5
-% есть ли элемент в списке
-in_ls([H|_], H).
-in_ls([_|T], El) :- in_list(T, El).
-
 % номер элемента в списке
 ls_el_at_num([], _, _, _) :- write("Such element isn\'t found"), !.
 ls_el_at_num([_], CurNum, Num, _) :- CurNum1 is CurNum + 1, CurNum1 < Num, write("Such element isn\'t found"), !.
@@ -67,3 +63,8 @@ app8 :-
   write(Min), !.
 app8 :-
   write("Список пустой").
+
+% Задание 9
+% есть ли элемент в списке
+in_ls([H|_], H) :- !.
+in_ls([_|T], El) :- in_ls(T, El).
