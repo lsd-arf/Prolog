@@ -76,4 +76,9 @@ reverse_ls(List, InvList) :- reverse_ls(List, [], InvList).
 
 % Задание 11
 p([], _) :- !.
-p([H1|T1], [H|T]) :- (H1 = H -> p(T1, T); p([H1|T1], T)).
+p([SubH|SubT], [H|T]) :- (SubH = H -> p(SubT, T); p([SubH|SubT], T)).
+
+% Задание 12
+remove_el([_|T], CurList, Num, Num, NewList) :- append_ls(CurList, T, NewList), !.
+remove_el([H|T], CurList, CurNum, Num, NewList) :- append_ls(CurList, [H], CurList1), CurNum1 is CurNum + 1, remove_el(T, CurList1, CurNum1, Num, NewList).
+remove_el(List, Num, NewList) :- remove_el(List, [], 1, Num, NewList).
