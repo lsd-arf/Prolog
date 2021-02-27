@@ -35,8 +35,8 @@ ls_num_el([H|T], El, Num) :- ls_num_el([H|T], El, 0, Num).
 
 % Задание 5
 % есть ли элемент в списке
-in_list([H|_], H).
-in_list([_|T], El) :- in_list(T, El).
+in_ls([H|_], H).
+in_ls([_|T], El) :- in_list(T, El).
 
 % номер элемента в списке
 ls_el_at_num([], _, _, _) :- write("Such element isn\'t found"), !.
@@ -45,13 +45,25 @@ ls_el_at_num([H|T], CurNum, Num, El) :- CurNum1 is CurNum + 1, ((CurNum1 is Num)
 ls_el_at_num([H|T], Num, El) :- ls_el_at_num([H|T], 0, Num, El).
 
 % Задание 6
-min_list_up([H], CurMin, Min) :- (H < CurMin -> Min is H; Min is CurMin), !.
-min_list_up([H|T], CurMin, Min) :- (H < CurMin -> CurMin1 is H; CurMin1 is CurMin), min_list_up(T, CurMin1, Min), Min is CurMin1.
-min_list_up([], _) :- write("List isn't exist"), fail, !.
-min_list_up([H], Min) :- Min is H, !.
-min_list_up([H|T], Min) :- min_list_up(T, H, Min).
+min_ls_up([H], CurMin, Min) :- (H < CurMin -> Min is H; Min is CurMin), !.
+min_ls_up([H|T], CurMin, Min) :- (H < CurMin -> CurMin1 is H; CurMin1 is CurMin), min_ls_up(T, CurMin1, Min), Min is CurMin1.
+min_ls_up([], _) :- write("List isn't exist"), fail, !.
+min_ls_up([H], Min) :- Min is H, !.
+min_ls_up([H|T], Min) :- min_ls_up(T, H, Min).
 
 % Задание 7
-min_list_down([], Min, Min) :- !.
-min_list_down([H|T], CurMin, Min) :- (H < CurMin -> CurMin1 is H; CurMin1 is CurMin), min_list_down(T, CurMin1, Min).
-min_list_down([H|T], Min) :- min_list_down(T, H, Min).
+min_ls_down([], Min, Min) :- !.
+min_ls_down([H|T], CurMin, Min) :- (H < CurMin -> CurMin1 is H; CurMin1 is CurMin), min_ls_down(T, CurMin1, Min).
+min_ls_down([H|T], Min) :- min_ls_down(T, H, Min).
+
+% Задание 8
+app8 :-
+  write("Количество элементов -> "),
+  read(N), N =\= 0,
+  write("Список -> "),
+  read_ls(N, List),
+  min_ls_down(List, Min),
+  write("Минимальный элемент => "),
+  write(Min), !.
+app8 :-
+  write("Список пустой").
