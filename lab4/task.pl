@@ -42,3 +42,11 @@ in_list([_|T], El) :- in_list(T, El).
 ls_el_at_num([], _, _, _) :- write("Such element isn\'t found"), !.
 ls_el_at_num([_], CurNum, Num, _) :- CurNum1 is CurNum + 1, CurNum1 < Num, write("Such element isn\'t found"), !.
 ls_el_at_num([H|T], CurNum, Num, El) :- CurNum1 is CurNum + 1, ((CurNum1 is Num) -> El is H; ls_el_at_num(T, CurNum1, Num, El)).
+ls_el_at_num([H|T], Num, El) :- ls_el_at_num([H|T], 0, Num, El).
+
+% Задание 6
+min_list_up([H], CurMin, Min) :- (H < CurMin -> Min is H; Min is CurMin), !.
+min_list_up([H|T], CurMin, Min) :- (H < CurMin -> CurMin1 is H; CurMin1 is CurMin), min_list_up(T, CurMin1, Min), Min is CurMin1.
+min_list_up([], _) :- write("List isn't exist"), fail, !.
+min_list_up([H], Min) :- Min is H, !.
+min_list_up([H|T], Min) :- min_list_up(T, H, Min).
