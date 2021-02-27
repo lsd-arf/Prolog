@@ -68,3 +68,9 @@ app8 :-
 % есть ли элемент в списке
 in_ls([H|_], H) :- !.
 in_ls([_|T], El) :- in_ls(T, El).
+
+% Задание 10
+% CurList изначально пустой []
+reverse_ls([], InvList, InvList) :- !.
+reverse_ls([H|T], CurList, InvList) :- reverse_ls(T, [H|CurList], InvList).
+reverse_ls(List, InvList) :- reverse_ls(List, [], InvList).
