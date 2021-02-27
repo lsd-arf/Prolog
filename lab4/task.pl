@@ -28,20 +28,17 @@ sum_ls_down([H|T], Sum) :- sum_ls_down([H|T], 0, Sum).
 sum_ls_up([], 0) :- !.
 sum_ls_up([H|T], Sum) :- sum_ls_up(T, Sum1), Sum is Sum1 + H.
 
-% Задание 4.1
-% вспомогательные
+% Задание 4
+ls_num_el([H], El, CurNum, Num) :- ((H = El) -> Num is CurNum + 1; write("Such element isn\'t found")), !.
+ls_num_el([H|T], El, CurNum, Num) :- CurNum1 is CurNum + 1, ((El = H) -> Num is CurNum1; ls_num_el(T, El, CurNum1, Num)).
+ls_num_el([H|T], El, Num) :- ls_num_el([H|T], El, 0, Num).
+
+% Задание 5
 % есть ли элемент в списке
 in_list([H|_], H).
 in_list([_|T], El) :- in_list(T, El).
 
 % номер элемента в списке
-%ls_num_el(_, _, Num, Num) :- !.
-%ls_num_el([H|T], El, CurNum, Num) :- CurNum1 is CurNum + 1, ((El = H) -> Num is CurNum1; ls_num_el(T, El, CurNum1, Num)).
-
-% общая задача
-%ls_el_numb([H|T], El, Num) :- .
-
-% Задание 4.2
-ls_num_el([H], El, CurNum, Num) :- ((H = El) -> Num is CurNum + 1; write("Such element isn\'t found")), !.
-ls_num_el([H|T], El, CurNum, Num) :- CurNum1 is CurNum + 1, ((El = H) -> Num is CurNum1; ls_num_el(T, El, CurNum1, Num)).
-ls_num_el([H|T], El, Num) :- ls_num_el([H|T], El, 0, Num).
+ls_el_at_num([], _, _, _) :- write("Such element isn\'t found"), !.
+ls_el_at_num([_], CurNum, Num, _) :- CurNum1 is CurNum + 1, CurNum1 < Num, write("Such element isn\'t found"), !.
+ls_el_at_num([H|T], CurNum, Num, El) :- CurNum1 is CurNum + 1, ((CurNum1 is Num) -> El is H; ls_el_at_num(T, CurNum1, Num, El)).
