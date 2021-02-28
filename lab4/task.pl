@@ -224,3 +224,10 @@ rev_between(List, NewList) :-
   append_ls(ListBefore, RevList, ListBB),
   append_ls(ListBB, ListAfter, NewList)
   ).
+
+% Задача 24
+two_max_els(List, Max1, Max2) :- 
+  max_ls_down(List, Max1),
+  ls_num_el(List, Max1, Num1),
+  rm_el(List, Num1, NewList),
+  max_ls_down(NewList, Max2).
