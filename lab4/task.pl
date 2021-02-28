@@ -260,3 +260,18 @@ ls_alternate([H|T]) :-
   (H < 0 -> 
   ls_alternate(T, 1); 
   ls_alternate(T, 0)).
+
+% Задача 36
+% получаем первый нечётный элемент
+ls_first_odd([], 0) :- write("List hasn\'t odd elements"), fail, !.
+ls_first_odd([H|T], El) :- (H mod 2 =\= 0 -> El is H; ls_first_odd(T, El)).
+
+max_odd_ls_down([], Max, Max) :- !.
+max_odd_ls_down([H|T], CurMax, Max) :- 
+  ((H > CurMax, H mod 2 =\= 0) -> 
+  CurMax1 is H; 
+  CurMax1 is CurMax), 
+  max_odd_ls_down(T, CurMax1, Max).
+max_odd_ls_down(List, Max) :-
+  ls_first_odd(List, El),
+  max_odd_ls_down(List, El, Max).
