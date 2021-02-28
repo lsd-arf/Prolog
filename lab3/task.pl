@@ -79,6 +79,17 @@ countDels(_, 0, CurCount, CurCount) :- !.
 countDels(Num, CurDel, CurCount, Count) :- (Num mod CurDel =:= 0 -> CurCount1 is CurCount + 1; CurCount1 is CurCount), CurDel1 is CurDel - 1, countDels(Num, CurDel1, CurCount1, Count).
 countDelsN(Num, Count) :- countDels(Num, Num, 0, Count).
 
+% Задание 13
+colatz(1, 1) :- !.
+colatz(2, 2) :- !.
+colatz(X, N) :- X > 2, X mod 2 =:= 0, X1 is (X // 2), X =\= 1, colatz(X1, R), N is R + 1.
+colatz(X, N) :- X > 2, X mod 2 =\= 0, X1 is (3 * X + 1), X =\= 1, colatz(X1, R), N is R + 1.
+
+colatzN(Max, Max, 10000) :- !.
+% N -текущая длина цепочки, Max - максимальная
+colatzN(Max, MaxN, Num) :- Num1 is (Num + 1), colatz(Num1, N), (N > Max -> Max1 is N, colatzN(Max1, MaxN, Num1); colatzN(Max, MaxN, Num1)).
+colatzN1(Max, MaxN, Num):- colatzN(Max, MaxN, Num), write(MaxN).
+
 % Задание 14
 % рекурсия вверх
 sumOfDels(_, CurDel, 0) :- CurDel < 4, !.
