@@ -318,3 +318,14 @@ ls_with_nums(List, NewList) :-
   ls_el_maxcount(List, El),
   count_els(List, Count),
   ls_with_nums(List, El, 0, Count, [], NewList).
+
+% Задача 60
+el_div_num_and_1_time(_, [], _, List, List) :- !.
+el_div_num_and_1_time(List, [H|T], CurNum, CurList, NewList) :-
+  CurNum1 is CurNum + 1,
+  ((H mod CurNum1 =:= 0,
+  count_equals(List, H, 1)) ->
+  append_ls(CurList, [H], CurList1);
+  append_ls(CurList, [], CurList1)),
+  el_div_num_and_1_time(List, T, CurNum1, CurList1, NewList).
+el_div_num_and_1_time(List, NewList) :- el_div_num_and_1_time(List, List, 0, [], NewList).
