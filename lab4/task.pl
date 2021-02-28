@@ -106,3 +106,8 @@ count_equals(List, El, Count) :- count_equals(List, El, 0, Count).
 count_els([], Count, Count) :- !.
 count_els([_|T], CurCount, Count) :- CurCount1 is CurCount + 1, count_els(T, CurCount1, Count).
 count_els(List, Count) :- count_els(List, 0, Count).
+
+% Задание 18, Вариант 12
+% Задача 11
+find_el1([H|T], El) :- rm_equals([H|T], H, [NewH|NewT]), count_els([NewH|NewT], Count), (Count = 1 -> El is NewH; El is H).
+find_el2([H|T], El) :- (in_ls(T, H) -> find_el2(T, El); El is H).
