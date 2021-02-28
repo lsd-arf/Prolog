@@ -275,3 +275,20 @@ max_odd_ls_down([H|T], CurMax, Max) :-
 max_odd_ls_down(List, Max) :-
   ls_first_odd(List, El),
   max_odd_ls_down(List, El, Max).
+
+% Задача 42
+% среднее арифметическое элементов
+ls_avg(List, Avg) :-
+  sum_ls_down(List, Sum),
+  count_els(List, Count),
+  Avg is Sum / Count.
+
+els_less_avg([], _, List, List) :- !.
+els_less_avg([H|T], Avg, CurList, NewList) :-
+  (H < Avg ->
+  append_ls(CurList, [H], CurList1),
+  els_less_avg(T, Avg, CurList1, NewList);
+  els_less_avg(T, Avg, CurList, NewList)).
+els_less_avg(List, NewList) :-
+  ls_avg(List, Avg),
+  els_less_avg(List, Avg, [], NewList).
