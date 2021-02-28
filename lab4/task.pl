@@ -231,3 +231,17 @@ two_max_els(List, Max1, Max2) :-
   ls_num_el(List, Max1, Num1),
   rm_el(List, Num1, NewList),
   max_ls_down(NewList, Max2).
+
+% Задача 33
+ls_alternate([], 1) :- !.
+ls_alternate([], 0) :- !.
+ls_alternate([H|T], Flag) :-
+  ((Flag = 0, H < 0) ->
+  ls_alternate(T, 1);
+  ((Flag = 1, H > 0) ->
+  ls_alternate(T, 0); 
+  fail)).
+ls_alternate([H|T]) :- 
+  (H < 0 -> 
+  ls_alternate(T, 1); 
+  ls_alternate(T, 0)).
