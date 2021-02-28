@@ -225,6 +225,21 @@ rev_between(List, NewList) :-
   append_ls(ListBB, ListAfter, NewList)
   ).
 
+% Задача 22
+% составляем лист из элементов из интервала
+ls_interval([], _, _, List, List) :- !.
+ls_interval([H|T], A, B, CurList, NewList) :- 
+  ((H > A, H < B) -> 
+  append_ls(CurList, [H], CurList1), 
+  ls_interval(T, A, B, CurList1, NewList); 
+  ls_interval(T, A, B, CurList, NewList)).
+ls_interval(List, A, B, NewList) :- ls_interval(List, A, B, [], NewList).
+
+ls_interval_count_min(List, A, B, Count) :-
+  ls_interval(List, A, B, NewList),
+  min_ls_down(NewList, Min),
+  count_equals(NewList, Min, Count).
+
 % Задача 24
 two_max_els(List, Max1, Max2) :- 
   max_ls_down(List, Max1),
