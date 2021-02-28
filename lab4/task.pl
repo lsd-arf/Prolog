@@ -84,10 +84,6 @@ rm_el([H|T], CurList, CurNum, Num, NewList) :- append_ls(CurList, [H], CurList1)
 rm_el(List, Num, NewList) :- rm_el(List, [], 1, Num, NewList).
 
 % Задание 13
-% количество элементов в списке
-count_els([], Num, Num) :- !.
-count_els([_|T], CurNum, Num) :- CurNum1 is CurNum + 1, count_els(T, CurNum1, Num).
-
 % удаление одинаковых с заданным элементов
 rm_equals(List, El, List) :- not(in_ls(List, El)), !.
 rm_equals(List, El, NewList) :- ls_num_el(List, El, Num), rm_el(List, Num, List1), rm_equals(List1, El, NewList).
@@ -104,3 +100,9 @@ uni_list([H|T], List) :- rm_equals(T, H, RmList), uni_list(RmList, List1), appen
 count_equals([], _, Count, Count) :- !.
 count_equals([H|T], El, CurCount, Count) :- (H = El -> CurCount1 is CurCount + 1; CurCount1 is CurCount), count_equals(T, El, CurCount1, Count).
 count_equals(List, El, Count) :- count_equals(List, El, 0, Count).
+
+% Задание 17
+% количество элементов в списке
+count_els([], Count, Count) :- !.
+count_els([_|T], CurCount, Count) :- CurCount1 is CurCount + 1, count_els(T, CurCount1, Count).
+count_els(List, Count) :- count_els(List, 0, Count).
