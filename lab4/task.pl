@@ -292,3 +292,29 @@ els_less_avg([H|T], Avg, CurList, NewList) :-
 els_less_avg(List, NewList) :-
   ls_avg(List, Avg),
   els_less_avg(List, Avg, [], NewList).
+
+% Задача 48
+% элемент, который повторяется наибольшее число раз
+ls_el_maxcount(_, [], _, El, El) :- !.
+ls_el_maxcount(List, [UniH|UniT], Count, CurEl, El) :-
+  count_equals(List, UniH, CountEquals),
+  (CountEquals > Count ->
+  CurEl1 is UniH, Count1 is CountEquals;
+  CurEl1 is CurEl, Count1 is Count),
+  ls_el_maxcount(List, UniT, Count1, CurEl1, El).
+ls_el_maxcount(List, El) :-
+  uni_list(List, [UniH|UniT]),
+  count_equals(List, UniH, CountEquals),
+  ls_el_maxcount(List, UniT, CountEquals, UniH, El).
+
+ls_with_nums([], _, _, _, List, List) :- !.
+ls_with_nums([H|T], El, CurNum, Count, CurList, NewList) :-
+  CurNum1 is CurNum + 1,
+  (El = H ->
+  append_ls(CurList, [CurNum1], CurList1);
+  append_ls(CurList, [], CurList1)),
+  ls_with_nums(T, El, CurNum1, Count, CurList1, NewList).
+ls_with_nums(List, NewList) :-
+  ls_el_maxcount(List, El),
+  count_els(List, Count),
+  ls_with_nums(List, El, 0, Count, [], NewList).
