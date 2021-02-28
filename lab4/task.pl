@@ -99,3 +99,8 @@ uni_els([H|T]) :- not(in_ls(T, H)), uni_els(T).
 % Задание 15
 uni_list([], []) :- !.
 uni_list([H|T], List) :- rm_equals(T, H, RmList), uni_list(RmList, List1), append_ls([H], List1, List).
+
+% Задание 16
+count_equals([], _, Count, Count) :- !.
+count_equals([H|T], El, CurCount, Count) :- (H = El -> CurCount1 is CurCount + 1; CurCount1 is CurCount), count_equals(T, El, CurCount1, Count).
+count_equals(List, El, Count) :- count_equals(List, El, 0, Count).
