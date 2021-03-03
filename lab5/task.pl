@@ -26,6 +26,7 @@ el_no(List, Num, El) :- el_no(List, Num, 1, El).
 el_no([H|_], Num, Num, H) :- !.
 el_no([_|Tail], Num, Ind, El) :- Ind1 is Ind + 1, el_no(Tail, Num, Ind1, El).
 
+% Задание 1
 pr_ein :- Houses = [_, _ ,_ ,_ ,_],
 
 		in_list(Houses, [red, english, _, _, _]),
@@ -49,6 +50,7 @@ pr_ein :- Houses = [_, _ ,_ ,_ ,_],
 		write(Houses),
 		write(WHO1), nl, write(WHO2).
 
+% Задание 2
 pr_friends :- Friends = [_, _, _],
 
 		in_list(Friends, [belokurov, _]),
@@ -62,3 +64,20 @@ pr_friends :- Friends = [_, _, _],
 		not(in_list(Friends, [rijov, red])),
 
 		write(Friends), !.
+
+% Задание 3
+pr_girls :- Girls = [_, _, _],
+
+		in_list(Girls, [_, white, _]),
+		in_list(Girls, [_, _, white]),
+		in_list(Girls, [_, green, _]),
+		in_list(Girls, [_, _, green]),
+		in_list(Girls, [_, blue, _]),
+		in_list(Girls, [_, _, blue]),
+		in_list(Girls, [anya, _, _]),
+		in_list(Girls, [natasha, _, green]),
+		in_list(Girls, [valya, _, _]),
+		not(in_list(Girls, [natasha, green, _])),
+		not(in_list(Girls, [valya, white, white])),
+
+		write(Girls), !.
