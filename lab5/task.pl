@@ -95,3 +95,30 @@ pr_factory :- Factory = [_, _, _],
 		in_list(Factory, [_, semenov, _, 2, borisov]),
 
 		write(Factory), !.
+
+% Задание 5
+pr_containers :- Containers = [_, _, _, _],
+
+		in_list(Containers, [butylka, _]),
+		in_list(Containers, [stakan, _]),
+		in_list(Containers, [kuvshin, _]),
+		in_list(Containers, [banka, _]),
+
+		in_list(Containers, [_, moloko]),
+		in_list(Containers, [_, limonad]),
+		in_list(Containers, [_, kvas]),
+		in_list(Containers, [_, voda]),
+
+		not(in_list(Containers, [butylka, voda])),
+		not(in_list(Containers, [butylka, moloko])),
+
+		sprava_next([kuvshin, _], [_, limonad], Containers),
+		sprava_next([_, limonad], [_, kvas], Containers),
+
+		not(in_list(Containers, [banka, limonad])),
+		not(in_list(Containers, [banka, voda])),
+
+		next_to([banka, _], [stakan, _], Containers),
+		next_to([banka, _], [_, moloko], Containers),
+
+		write(Containers), !.
