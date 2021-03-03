@@ -122,3 +122,21 @@ pr_containers :- Containers = [_, _, _, _],
 		next_to([banka, _], [_, moloko], Containers),
 
 		write(Containers), !.
+
+% Задание 6
+pr_geniuses :- Geniuses = [_, _, _, _],
+
+		in_list(Geniuses, [voronov, _, concert, writer]),
+		in_list(Geniuses, [pavlov, _, _, artist]),
+		in_list(Geniuses, [levitskiy, _, concert, _]),
+		in_list(Geniuses, [saharov, _, _, writer]),
+
+		in_list(Geniuses, [_, dancer, _, _]),
+		in_list(Geniuses, [_, artist, _, _]),
+		in_list(Geniuses, [_, singer, concert, _]),
+		in_list(Geniuses, [_, writer, _, artist]),
+
+		not(in_list(Geniuses, [pavlov, _, writer, _])),
+		not(in_list(Geniuses, [levitskiy, _, singer, _])),
+
+		write(Geniuses), !.
