@@ -1,0 +1,95 @@
+Блоггеры
+1. деятельность
+2. кол-во подписчиков
+3. дата создания канала
+4. ведёт ли Instagram
+5. ведёт ли Telegram
+
+1. Ответы
+Развлечения 0
+IT 1
+Программирование 2
+Политика 3
+Мотивация 4
+Интервью+ 5
+Технологии 6
+Игры 7
+Детский контент 8
+Разный контент 9
+
+2. Ответы
+0 - 100 тыс 0
+100 тыс - 200 тыс 1
+200 тыс - 500 тыс 2
+500 тыс - 1 млн 3
+1 млн - 2 млн 4
+2 млн - 5 млн 5
+5 млн - 10 млн 6
+больше 10 млн 7
+
+3. Ответы
+До 2010 0
+2010 - 2012 1
+2013 - 2015 2
+2016 - 2018 3
+2019 - 2021 4
+
+4. Ответы
+Да 0
+Нет 1
+
+5. Ответы
+Да 0
+Нет 1
+
+Ключи:
+pewdiepie 07101
+labelcom 06301
+chicken curry 05301
+azamat musagaliev 03400
+shastun 04401
+lapenko 05201
+it boroda 12300
+item 10300
+shifu 10210
+sergei nemchinskiy 11100
+freelancer po zhizni 11400
+haudi ho 14200
+simple code 22310
+extreme code 21110
+gosha dudar 23200
+loftblog 22200
+alexei navalny 36200
+soloviev live 33400
+acute angle 33310
+tv rain 35100
+anatoly shariy 35200
+echo moskvy 33200
+aleksandr nevzorov 33100
+ksenia sobchak 34300
+mihail hodorkovskiy 33000
+iskusstvo harizmy 44310
+pavel bagryantsev 43100
+instarding 44200
+igor voitenko 45201
+ans motivation 42201
+vdud 56200
+v gostyah u gordona 54101
+people pro sergei pavlovich 52100
+vpiska 53300
+wylsacom 66100
+ikakprosto 64200
+808 65300
+rozetked 64100
+itpedia 65200
+kuplinov play 77101
+marmok 77001
+axeleley 70301
+mrlololoshka roman filchenkov 76101
+a4 87201
+melliart 86101
+kikido 86201
+lesha maisak 85401
+like nastya 87301
+sobolev 96201
+larin 95100
