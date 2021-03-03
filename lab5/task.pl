@@ -59,6 +59,7 @@ pr_friends :- Friends = [_, _, _],
 		in_list(Friends, [_, white]),
 		in_list(Friends, [_, black]),
 		in_list(Friends, [_, red]),
+
 		not(in_list(Friends, [belokurov, white])),
 		not(in_list(Friends, [chernov, black])),
 		not(in_list(Friends, [rijov, red])),
@@ -77,7 +78,20 @@ pr_girls :- Girls = [_, _, _],
 		in_list(Girls, [anya, _, _]),
 		in_list(Girls, [natasha, _, green]),
 		in_list(Girls, [valya, _, _]),
+
 		not(in_list(Girls, [natasha, green, _])),
 		not(in_list(Girls, [valya, white, white])),
 
 		write(Girls), !.
+
+% Задание 4
+pr_factory :- Factory = [_, _, _],
+
+		in_list(Factory, [slesar, _, 0, 0, _]),
+		in_list(Factory, [tokar, _, _, 1, _]),
+		in_list(Factory, [svarschik, _, _, _, _]),
+		in_list(Factory, [_, borisov, 1, _, _]),
+		in_list(Factory, [_, ivanov, _, _, _]),
+		in_list(Factory, [_, semenov, _, 2, borisov]),
+
+		write(Factory), !.
