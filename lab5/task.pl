@@ -50,7 +50,7 @@ pr_ein :- Houses = [_, _ ,_ ,_ ,_],
 		write(Houses),
 		write(WHO1), nl, write(WHO2).
 
-% Задание 2
+% Задание 2, фамилия - цвет волос
 pr_friends :- Friends = [_, _, _],
 
 		in_list(Friends, [belokurov, _]),
@@ -66,7 +66,7 @@ pr_friends :- Friends = [_, _, _],
 
 		write(Friends), !.
 
-% Задание 3
+% Задание 3, имя - цвет платья - цвет туфель
 pr_girls :- Girls = [_, _, _],
 
 		in_list(Girls, [_, white, _]),
@@ -84,7 +84,7 @@ pr_girls :- Girls = [_, _, _],
 
 		write(Girls), !.
 
-% Задание 4
+% Задание 4, профессия - фамилия - флаг наличия братьев/сестёр - младший/средний/старший - на чьей сестре женат
 pr_factory :- Factory = [_, _, _],
 
 		in_list(Factory, [slesar, _, 0, 0, _]),
@@ -96,7 +96,7 @@ pr_factory :- Factory = [_, _, _],
 
 		write(Factory), !.
 
-% Задание 5
+% Задание 5, сосуд - напиток
 pr_containers :- Containers = [_, _, _, _],
 
 		in_list(Containers, [butylka, _]),
@@ -123,7 +123,7 @@ pr_containers :- Containers = [_, _, _, _],
 
 		write(Containers), !.
 
-% Задание 6
+% Задание 6, фамилия - деятельность - где были вечером - позировали художнику/о них пишут повесть
 pr_geniuses :- Geniuses = [_, _, _, _],
 
 		in_list(Geniuses, [voronov, _, concert, writer]),
@@ -140,3 +140,26 @@ pr_geniuses :- Geniuses = [_, _, _, _],
 		not(in_list(Geniuses, [levitskiy, _, singer, _])),
 
 		write(Geniuses), !.
+
+% Задание 7, место - имя - национальность - спорт - лучше кого играет
+pr_universiade :- Universiade = [_, _, _],
+
+		in_list(Universiade, [1, _, _, cricket, _]),
+		in_list(Universiade, [2, _, _, _, _]),
+		in_list(Universiade, [3, _, _, _, _]),
+		in_list(Universiade, [_, _, _, tennis, _]),
+		in_list(Universiade, [_, _, american, _, _]),
+
+		in_list(Universiade, [_, michael, _, basketball, _]),
+		in_list(Universiade, [_, saymon, israel, _, _]),
+
+		not(in_list(Universiade, [_, saymon, _, tennis, _])),
+		not(in_list(Universiade, [_, michael, american, _, _])),
+
+		sleva_next([_, _, american, _, _], [_, michael, _, _, _], Universiade),
+		sleva_next([_, _, _, tennis, _], [_, saymon, _, _, _], Universiade),
+		
+		in_list(Universiade, [_, Name, australian, _, _]),
+		in_list(Universiade, [_, richard, _, Sport, _]),
+
+		write(Universiade), !.
