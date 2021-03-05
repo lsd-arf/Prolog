@@ -163,3 +163,36 @@ pr_universiade :- Universiade = [_, _, _],
 		in_list(Universiade, [_, richard, _, Sport, _]),
 
 		write(Universiade), !.
+
+% Задание 8, имя - инструмент - камень - срок заточения - труднее всего работать заступом
+pr_gnomes :-
+	Gnomes = [_, _, _, _, _],
+
+	in_list(Gnomes, [_, _, rubin, _, _]),
+	in_list(Gnomes, [_, _, _, 80, _]),
+	in_list(Gnomes, [_, _, _, 131, _]),
+	in_list(Gnomes, [_, _, _, 159, _]),
+	in_list(Gnomes, [_, _, _, 176, _]),
+	in_list(Gnomes, [_, _, _, 202, _]),
+	%sprava_next([_, _, _, 80, _], [_, _, _, 131, _], Gnomes),
+	%sprava_next([_, _, _, 131, _], [_, _, _, 159, _], Gnomes),
+	%sprava_next([_, _, _, 159, _], [_, _, _, 176, _], Gnomes),
+	%sprava_next([_, _, _, 176, _], [_, _, _, 202, _], Gnomes),
+	sprava_next([_, _, sapfir, _, _], [_, kail, _, _, 0], Gnomes),
+	in_list(Gnomes, [dryhly, _, _, _, _]),
+	sprava_next([_, _, _, 131, _], [_, _, almaz, _, _], Gnomes),
+	in_list(Gnomes, [_, zastup, _, _, 1]),
+	sprava_next([_, turbobur, _, _, 0], [brykly, _, _, _, _], Gnomes),
+	in_list(Gnomes, [brykly, _, _, Sbrykly, _]),
+	in_list(Gnomes, [_, _, izumrud, Sizumrud, _]),
+	in_list(Gnomes, [figli, _, _, Sfigli, _]),
+	not(in_list(Gnomes, [figli, _, _, 80, _])),
+	%in_list(Gnomes, [dryhly, _, _, 202, _]),
+	Sbrykly < Sizumrud,
+	Sfigli < Sizumrud,
+	not(in_list(Gnomes, [zvyakli, _, sapfir, _, _])),
+	sleva_next([_, _, agat, _, _], [zvyakli, _, _, _, _], Gnomes),
+	sprava_next([_, kirka, _, _, 0], [kvakli, _, _, _, _], Gnomes),
+	sleva_next([_, molot, almaz, _, 0], [kvakli, _, _, _, _], Gnomes),
+
+	write(Gnomes), !.
