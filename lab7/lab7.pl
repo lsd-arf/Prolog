@@ -140,3 +140,29 @@ task3 :-
   regular_word(LW, Word),
   write("Regular word => "),
   write_str(Word).
+
+% Задание 4
+% получаем список из последних трёх элементов
+list_with3els(List, List) :- count_els(List, 3), !.
+list_with3els([_|T], NewList) :- list_with3els(T, NewList).
+
+% список из одного символа заданное количество раз
+list_with1el(_, 0, List, List) :- !.
+list_with1el(El, N, CurList, List) :-
+  N1 is N - 1,
+  append(CurList, [El], CurList1),
+  list_with1el(El, N1, CurList1, List).
+list_with1el(El, N, List) :- list_with1el(El, N, [], List).
+
+task4 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  count_els(S, Count),
+  (Count > 5 ->
+  ([H1|[H2|[H3|T]]] = S,
+  list_with3els(T, T3),
+  append([H1, H2, H3], T3, NewS));
+  ([H1|_] = S,
+  list_with1el(H1, Count, NewS))),
+  write("New Str => "),
+  write_str(NewS).
