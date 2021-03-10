@@ -246,28 +246,6 @@ task6 :-
 % Задание 7
 % считаем количество плюсов и минусов
 count_pm([], Count, Count) :- !.
-count_pm([H|T], CurCount, Count) :-
+count_pm([H|T], Count, Count) :-
   ((H = 43 | H = 45) ->
-  CurCount1 is CurCount + 1;
-  CurCount1 is CurCount),
-  count_pm(T, CurCount1, Count).
-count_pm(List, Count) :- count_pm(List, 0, Count).
-
-% считаем количество элементов, после которых идёт 0
-count_afterthat0([_], Count, Count) :- !.
-count_afterthat0([_|[H2|T]], CurCount, Count) :-
-  (H2 = 48 ->
-  CurCount1 is CurCount + 1;
-  CurCount1 is CurCount),
-  count_afterthat0([H2|T], CurCount1, Count).
-count_afterthat0(List, Count) :- count_afterthat0(List, 0, Count).
-
-task7 :-
-  write("Str -> "),
-  read_str_nofix(S),
-  count_pm(S, CountPM),
-  write("Count [+] and [-] => "),
-  write(CountPM), nl,
-  count_afterthat0(S, Count0),
-  write("Count els, after which [0] => "),
-  write(Count0).
+  ).
