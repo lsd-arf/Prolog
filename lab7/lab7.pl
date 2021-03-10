@@ -329,3 +329,48 @@ task9 :-
       write("Strs are equals")
     )
   ).
+
+% Задание 10
+% получить список до номера (вместе с номером)
+get_ls_before(_, Num, Num, List, List) :- !.
+get_ls_before([H|T], CurNum, Num, CurList, NewList) :- 
+  append(CurList, [H], CurList1),
+  CurNum1 is CurNum + 1,
+  get_ls_before(T, CurNum1, Num, CurList1, NewList).
+get_ls_before(List, Num, NewList) :- get_ls_before(List, 0, Num, [], NewList).
+
+% получить список после номера (вместе с номером)
+get_ls_after(List, Num, ListAfter) :- 
+  Num1 is Num - 1, 
+  get_ls_before(List, Num1, ListBefore), 
+  append(ListBefore, ListAfter, List).
+
+% получить список между номерами (без них)
+get_ls_between(List, Num1, Num2, ListBetween) :- 
+  get_ls_before(List, Num1, ListBefore),
+  append(ListBefore, ListAfter, List),
+  Num22 is Num2 - Num1 - 1,
+  get_ls_before(ListAfter, Num22, ListBetween).
+
+% меняем все 'abc' на 'www'
+rpc_abc_to_www([H1, H2], CurList, List) :- append(CurList, [H1, H2], List), !.
+rpc_abc_to_www([H1], CurList, List) :- append(CurList, [H1], List), !.
+rpc_abc_to_www([], List, List) :- !.
+rpc_abc_to_www([H1|[H2|[H3|T]]], CurList, List) :-
+  ((H1 = 97, H2 = 98, H3 = 99) ->
+  (append(CurList, [119, 119, 119], CurList1),
+  rpc_abc_to_www(T, CurList1, List));
+  (append(CurList, [H1], CurList1),
+  rpc_abc_to_www([H2|[H3|T]], CurList1, List))).
+rpc_abc_to_www(List, NewList) :- rpc_abc_to_www(List, [], NewList).
+
+task10 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  [H1|[H2|[H3|_]]] = S,
+  ((H1 = 97, H2 = 98, H3 = 99) ->
+  rpc_abc_to_www(S, NewS);
+  append(S, [122, 122, 122], NewS)),
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
