@@ -271,3 +271,30 @@ task7 :-
   count_afterthat0(S, Count0),
   write("Count els, after which [0] => "),
   write(Count0).
+
+% Задание 8
+% есть ли элемент в списке
+in_ls([H|_], H) :- !.
+in_ls([_|T], El) :- in_ls(T, El).
+
+to_false(TRUE) :- not(TRUE), !.
+
+task8 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  (
+    to_false(
+      (in_ls(S, 119),
+      in_ls(S, 120))
+    ) ->
+    write("w or x isn\'t exist");
+    (  
+      ls_num_el(S, 119, N119),
+      ls_num_el(S, 120, N120),
+      (
+        N119 < N120 ->
+        write("index of [w] is less than [x]");
+        write("index of [x] is less than [w]")
+      )
+    )
+  ).
