@@ -472,3 +472,20 @@ task13 :-
   write("["),
   write_str(NewS),
   write("]").
+
+% Задание 14
+% ищем количество цифр в строке
+list_count_digits([], Count, Count) :- !.
+list_count_digits([H|T], CurCount, Count) :-
+  ((H >= 48, H =< 57) ->
+  CurCount1 is CurCount + 1;
+  CurCount1 is CurCount),
+  list_count_digits(T, CurCount1, Count).
+list_count_digits(List, Count) :- list_count_digits(List, 0, Count).
+
+task14 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  list_count_digits(S, Count),
+  write("Count of digits in str => "),
+  write(Count).
