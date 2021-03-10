@@ -222,3 +222,23 @@ task5 :-
   write("]"), nl,
   write("Nums of el => "),
   write(Nums).
+
+% Задание 6
+% получаем символы с номерами, которые кратны 3
+list_mod3els(_, Num, Count, List, List) :- Num > Count, !.
+list_mod3els(List, Num, Count, CurList, NewList) :-
+  Num1 is Num + 3,
+  ls_el_at_num(List, Num, El),
+  append(CurList, [El], CurList1),
+  list_mod3els(List, Num1, Count, CurList1, NewList).
+list_mod3els(List, NewList) :-
+  count_els(List, Count),
+  list_mod3els(List, 3, Count, [], NewList).
+
+task6 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  list_mod3els(S, Mod3),
+  write("Chrs, where num mod 3 => ["),
+  write_str(Mod3),
+  write("]").
