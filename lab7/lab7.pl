@@ -374,3 +374,22 @@ task10 :-
   write("New Str => ["),
   write_str(NewS),
   write("]").
+
+% Задание 11
+% добиваем строку заданным символом до заданной длины
+list_rsz(_, N, N, List, List) :- !.
+list_rsz(El, CurN, N, CurList, List) :-
+  CurN1 is CurN + 1,
+  append(CurList, [El], CurList1),
+  list_rsz(El, CurN1, N, CurList1, List).
+
+task11 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  count_els(S, Count),
+  (Count > 10 ->
+  get_ls_before(S, 6, NewS);
+  list_rsz(111, Count, 12, S, NewS)),
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
