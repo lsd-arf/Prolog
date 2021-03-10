@@ -489,3 +489,20 @@ task14 :-
   list_count_digits(S, Count),
   write("Count of digits in str => "),
   write(Count).
+
+% Задание 15
+% содержит ли только символы a, b, c
+% здесь я не проверял, содержит ли строка все 3 символа
+% установил условием, что строка может состоять из этих трёх символов
+% но не обязательно только из них
+list_onlyabc([]) :- !.
+list_onlyabc([H|T]) :-
+  ((H = 97 | H = 98 | H = 99) ->
+  list_onlyabc(T); fail).
+
+task15 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  ((list_onlyabc(S)) ->
+  write("Str has ONLY a, b ,c");
+  write("Str has NOT ONLY a, b, c")).
