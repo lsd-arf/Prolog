@@ -506,3 +506,23 @@ task15 :-
   ((list_onlyabc(S)) ->
   write("Str has ONLY a, b ,c");
   write("Str has NOT ONLY a, b, c")).
+
+% Задание 16
+rpc_word_to_letter([H1, H2, H3], CurList, List) :- append(CurList, [H1, H2, H3], List), !.
+rpc_word_to_letter([H1, H2], CurList, List) :- append(CurList, [H1, H2], List), !.
+rpc_word_to_letter([H1], CurList, List) :- append(CurList, [H1], List), !.
+rpc_word_to_letter([], List, List) :- !.
+rpc_word_to_letter([H1|[H2|[H3|[H4|T]]]], CurList, List) :-
+  ((H1 = 119, H2 = 111, H3 = 114, H4 = 100) ->
+  (append(CurList, [108, 101, 116, 116, 101, 114], CurList1),
+  rpc_word_to_letter(T, CurList1, List));
+  (append(CurList, [H1], CurList1),
+  rpc_word_to_letter([H2|[H3|[H4|T]]], CurList1, List))).
+rpc_word_to_letter(List, NewList) :- rpc_word_to_letter(List, [], NewList).
+
+task16 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  rpc_word_to_letter(S, NewS),
+  write("New Str => "),
+  write_str(NewS).
