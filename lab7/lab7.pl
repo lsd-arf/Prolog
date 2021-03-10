@@ -277,13 +277,11 @@ task7 :-
 in_ls([H|_], H) :- !.
 in_ls([_|T], El) :- in_ls(T, El).
 
-to_false(TRUE) :- not(TRUE), !.
-
 task8 :-
   write("Str -> "),
   read_str_nofix(S),
   (
-    to_false(
+    not(
       (in_ls(S, 119),
       in_ls(S, 120))
     ) ->
@@ -296,5 +294,38 @@ task8 :-
         write("index of [w] is less than [x]");
         write("index of [x] is less than [w]")
       )
+    )
+  ).
+
+% Задание 9
+% выводим строку заданное количество раз
+write_str_n(_, 0) :- !.
+write_str_n(Str, N) :-
+  N1 is N - 1,
+  write("["),
+  write_str(Str),
+  write("] "),
+  write_str_n(Str, N1).
+
+task9 :-
+  write("Str1 -> "),
+  read_str_nofix(S1),
+  write("Str2 -> "),
+  read_str_nofix(S2),
+  count_els(S1, Count1),
+  count_els(S2, Count2),
+  (
+    Count1 > Count2 ->
+    (
+      CountD is Count1 - Count2,
+      write_str_n(S1, CountD)
+    );
+    (
+      Count2 > Count1 ->
+      (
+        CountD is Count2 - Count1,
+        write_str_n(S2, CountD)
+      );
+      write("Strs are equals")
     )
   ).
