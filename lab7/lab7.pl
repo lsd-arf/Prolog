@@ -393,3 +393,63 @@ task11 :-
   write("New Str => ["),
   write_str(NewS),
   write("]").
+
+% Задание 12
+% получаем список из слов из 3 символов
+list_words3chrs([_, _], List, List) :- !.
+list_words3chrs([_], List, List) :- !.
+list_words3chrs([], List, List) :- !.
+list_words3chrs(Str, CurListWords, ListWords) :-
+  get_ls_before(Str, 3, BeforeStr),
+  append(BeforeStr, AfterStr, Str),
+  append(CurListWords, [BeforeStr], CurListWords1),
+  list_words3chrs(AfterStr, CurListWords1, ListWords).
+list_words3chrs(Str, ListWords) :- list_words3chrs(Str, [], ListWords).
+
+% максимум из трёх элементов списка
+max_of_ls([H1, H2, H3], H1) :- H1 >= H2, H1 >= H3, !.
+max_of_ls([_, H2, H3], H2) :- H2 >= H3, !.
+max_of_ls([_, _, H3], H3) :- !.
+
+% меняем в каждом слове списка средний элемент на другой (max + 1)
+rpc_mid_el_to_anr([], List, List) :- !.
+rpc_mid_el_to_anr([H|T], CurList, List) :-
+  max_of_ls(H, Max),
+  Max1 is Max + 1,
+  [H1, _, H2] = H,
+  append(CurList, [[H1, Max1, H2]], CurList1),
+  rpc_mid_el_to_anr(T, CurList1, List).
+rpc_mid_el_to_anr(Str, List) :- rpc_mid_el_to_anr(Str, [], List).
+
+% выведем список строк
+write_list_str([]) :- !.
+write_list_str([H|T]) :-
+  write("["),
+  write_str(H),
+  write("]"), nl,
+  write_list_str(T).
+
+% проверка списка из трёх элементов "по-возрастанию"
+check_asc([H1, H2, H3]) :- H1 =< H2, H2 =< H3, !.
+
+% строки, у которых символы идут в порядке возрастания
+list_of_asc_strs([], List, List) :- !.
+list_of_asc_strs([H|T], CurList, List) :-
+  (check_asc(H) ->
+  append(CurList, [H], CurList1);
+  CurList1 = CurList),
+  list_of_asc_strs(T, CurList1, List).
+list_of_asc_strs(List, NewList) :- list_of_asc_strs(List, [], NewList).
+
+task12 :-
+  write("Str -> "),
+  read_str_nofix(S), nl,
+  write("Original => "), nl,
+  list_words3chrs(S, Words),
+  write_list_str(Words), nl,
+  write("Modified => "), nl,
+  rpc_mid_el_to_anr(Words, WordsRPC),
+  write_list_str(WordsRPC), nl,
+  write("Ascinated => "), nl,
+  list_of_asc_strs(Words, WordsASC),
+  write_list_str(WordsASC).
