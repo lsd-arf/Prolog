@@ -45,11 +45,13 @@ count_chrs(List, Count) :- count_chrs(List, 0, Count).
 task1 :-
   write("Str -> "),
   read_str_nofix(S),
+  write("["),
   write_str(S),
-  write(", "),
+  write("], ["),
   write_str(S),
-  write(", "),
-  write_str(S), nl,
+  write("], ["),
+  write_str(S),
+  write("]"), nl,
   write("Elements => "),
   count_els(S, Count),
   write(Count).
@@ -138,8 +140,9 @@ task3 :-
   read_str_nofix(S),
   list_of_words(S, LW),
   regular_word(LW, Word),
-  write("Regular word => "),
-  write_str(Word).
+  write("Regular word => ["),
+  write_str(Word),
+  write("]").
 
 % Задание 4
 % получаем список из последних трёх элементов
@@ -164,5 +167,58 @@ task4 :-
   append([H1, H2, H3], T3, NewS));
   ([H1|_] = S,
   list_with1el(H1, Count, NewS))),
-  write("New Str => "),
-  write_str(NewS).
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
+
+% Задание 5
+% номер элемента в списке
+ls_num_el([H], El, CurNum, Num) :- 
+  ((H = El) -> 
+  Num is CurNum + 1; 
+  write("Such element isn\'t found")), !.
+ls_num_el([H|T], El, CurNum, Num) :- 
+  CurNum1 is CurNum + 1, 
+  ((El = H) -> 
+  Num is CurNum1; 
+  ls_num_el(T, El, CurNum1, Num)).
+ls_num_el([H|T], El, Num) :- ls_num_el([H|T], El, 0, Num).
+
+% получение элемента по номеру в списке
+ls_el_at_num([], _, _, _) :- write("Such element isn\'t found"), !.
+ls_el_at_num([_], CurNum, Num, _) :- 
+  CurNum1 is CurNum + 1, 
+  CurNum1 < Num, 
+  write("Such element isn\'t found"), !.
+ls_el_at_num([H|T], CurNum, Num, El) :- 
+  CurNum1 is CurNum + 1, 
+  ((CurNum1 is Num) -> 
+  El is H; 
+  ls_el_at_num(T, CurNum1, Num, El)).
+ls_el_at_num([H|T], Num, El) :- ls_el_at_num([H|T], 0, Num, El).
+
+% формируем список из номеров символов, совпадающих с заданным символом
+ls_with_nums([], _, _, _, List, List) :- !.
+ls_with_nums([H|T], El, CurNum, Count, CurList, NewList) :-
+  CurNum1 is CurNum + 1,
+  (El = H ->
+  append(CurList, [CurNum1], CurList1);
+  append(CurList, [], CurList1)),
+  ls_with_nums(T, El, CurNum1, Count, CurList1, NewList).
+ls_with_nums(List, El, NewList) :-
+  count_els(List, Count),
+  ls_with_nums(List, El, 0, Count, [], NewList).
+
+task5 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  count_els(S, Count),
+  ls_el_at_num(S, Count, El),
+  ls_with_nums(S, El, Nums),
+  write("El at "),
+  write(Count),
+  write(" position => ["),
+  write_str([El]),
+  write("]"), nl,
+  write("Nums of el => "),
+  write(Nums).
