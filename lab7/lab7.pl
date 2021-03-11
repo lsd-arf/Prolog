@@ -612,3 +612,23 @@ task20 :-
   write("New Str => ["),
   write_str(NewS),
   write("]").
+
+% Задание 22
+% выводим первый, последний и средний (если он есть) символы
+task22 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  count_els(S, Count),
+  ((0 is Count mod 2) ->
+  (Flag = 0);
+  (MidN is (1 + Count) / 2,
+  ls_el_at_num(S, MidN, ElMid),
+  Flag = 1)),
+  ls_el_at_num(S, 1, Left),
+  ls_el_at_num(S, Count, Right),
+  (Flag = 1 ->
+  NewS = [Left, Right, ElMid];
+  NewS = [Left, Right]),
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
