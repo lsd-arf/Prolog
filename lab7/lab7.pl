@@ -572,3 +572,22 @@ task18 :-
   write("New Str => ["),
   write_str(NewS),
   write("]").
+
+% Задание 19
+% количество вхождения aba в строку
+count_aba_in_str([_, _], Count, Count) :- !.
+count_aba_in_str([_], Count, Count) :- !.
+count_aba_in_str([], Count, Count) :- !.
+count_aba_in_str([H1|[H2|[H3|T]]], CurCount, Count) :-
+  ((H1 = 97, H2 = 98, H3 = 97) ->
+  CurCount1 is CurCount + 1;
+  CurCount1 is CurCount),
+  count_aba_in_str([H2|[H3|T]], CurCount1, Count).
+count_aba_in_str(List, Count) :- count_aba_in_str(List, 0, Count).
+
+task19 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  count_aba_in_str(S, Count),
+  write("Count \'aba\' in str => "),
+  write(Count).
