@@ -550,3 +550,25 @@ task17 :-
   write("New Str => ["),
   write_str(NewS),
   write("]").
+
+% Задание 18
+% удаляем abc, за которыми идёт цифра
+rm_abc_afterwhich_digit([H1, H2, H3], CurList, List) :- append(CurList, [H1, H2, H3], List), !.
+rm_abc_afterwhich_digit([H1, H2], CurList, List) :- append(CurList, [H1, H2], List), !.
+rm_abc_afterwhich_digit([H1], CurList, List) :- append(CurList, [H1], List), !.
+rm_abc_afterwhich_digit([], List, List) :- !.
+rm_abc_afterwhich_digit([H1|[H2|[H3|[H4|T]]]], CurList, List) :-
+  ((H1 = 97, H2 = 98, H3 = 99, H4 >= 48, H4 =< 57) ->
+  (append(CurList, [H4], CurList1),
+  rm_abc_afterwhich_digit(T, CurList1, List));
+  (append(CurList, [H1], CurList1),
+  rm_abc_afterwhich_digit([H2|[H3|[H4|T]]], CurList1, List))).
+rm_abc_afterwhich_digit(List, NewList) :- rm_abc_afterwhich_digit(List, [], NewList).
+
+task18 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  rm_abc_afterwhich_digit(S, NewS),
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
