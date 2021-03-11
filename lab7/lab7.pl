@@ -591,3 +591,24 @@ task19 :-
   count_aba_in_str(S, Count),
   write("Count \'aba\' in str => "),
   write(Count).
+
+% Задание 20
+% составим список слов
+% далее будет вытаскивать слово из списка и ставить после него пробел
+% после последнего слова списка пробел не ставим
+str_with1space([], Str, Str) :- write("Str hasn\'t words"), !.
+str_with1space([H], CurStr, Str) :- append(CurStr, H, Str), !.
+str_with1space([H|T], CurStr, Str) :-
+  append(H, [32], H1),
+  append(CurStr, H1, CurStr1),
+  str_with1space(T, CurStr1, Str).
+str_with1space(List, Str) :- str_with1space(List, [], Str).
+
+task20 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  list_of_words(S, Words),
+  str_with1space(Words, NewS),
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
