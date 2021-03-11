@@ -508,6 +508,7 @@ task15 :-
   write("Str has NOT ONLY a, b, c")).
 
 % Задание 16
+% меняем в строке слово word на letter
 rpc_word_to_letter([H1, H2, H3], CurList, List) :- append(CurList, [H1, H2, H3], List), !.
 rpc_word_to_letter([H1, H2], CurList, List) :- append(CurList, [H1, H2], List), !.
 rpc_word_to_letter([H1], CurList, List) :- append(CurList, [H1], List), !.
@@ -524,5 +525,28 @@ task16 :-
   write("Str -> "),
   read_str_nofix(S),
   rpc_word_to_letter(S, NewS),
-  write("New Str => "),
-  write_str(NewS).
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
+
+% Задание 17
+% удаляем x, за которыми идёт abc
+rm_x_afterwhich_abc([H1, H2, H3], CurList, List) :- append(CurList, [H1, H2, H3], List), !.
+rm_x_afterwhich_abc([H1, H2], CurList, List) :- append(CurList, [H1, H2], List), !.
+rm_x_afterwhich_abc([H1], CurList, List) :- append(CurList, [H1], List), !.
+rm_x_afterwhich_abc([], List, List) :- !.
+rm_x_afterwhich_abc([H1|[H2|[H3|[H4|T]]]], CurList, List) :-
+  ((H1 = 120, H2 = 97, H3 = 98, H4 = 99) ->
+  (append(CurList, [H2, H3, H4], CurList1),
+  rm_x_afterwhich_abc(T, CurList1, List));
+  (append(CurList, [H1], CurList1),
+  rm_x_afterwhich_abc([H2|[H3|[H4|T]]], CurList1, List))).
+rm_x_afterwhich_abc(List, NewList) :- rm_x_afterwhich_abc(List, [], NewList).
+
+task17 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  rm_x_afterwhich_abc(S, NewS),
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
