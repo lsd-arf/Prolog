@@ -130,9 +130,11 @@ regular_word([], _, Word, Word) :- !.
 regular_word([H|T], Count, CurWord, Word) :-
   count_equals([H|T], H, Count1),
   (Count1 > Count ->
-  CurWord1 = H;
-  CurWord1 = CurWord),
-  regular_word(T, Count1, CurWord1, Word).
+  (CurWord1 = H,
+  Count2 = Count1);
+  (CurWord1 = CurWord,
+  Count2 = Count)),
+  regular_word(T, Count2, CurWord1, Word).
 regular_word(List, Word) :- regular_word(List, 0, [], Word).
 
 task3 :-
