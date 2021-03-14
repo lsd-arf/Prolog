@@ -71,4 +71,9 @@ count_lines_without_spaces([BigH|BigT], CurCount, Count) :-
 t1_1 :-
   see0, read_list_str(List), 
   length_of_max_line(List, Max),
-  seen, write("Max length -> "), write(Max).
+  seen, write("Max length => "), write(Max).
+
+t1_2 :-
+  see0, read_list_str(List),
+  count_lines_without_spaces(List, 0, Count),
+  seen, write("Count => "), write(Count).
