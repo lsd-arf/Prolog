@@ -91,6 +91,45 @@ t1_2 :-
   count_lines_without_spaces(List, 0, Count),
   seen, write("Count => "), write(Count).
 
+% Задание 1.3
+% файл в виде листа из символов
+list_file([], List, List) :- !.
+list_file([H|T], CurList, List) :-
+  append(CurList, H, CurList1),
+  list_file(T, CurList1, List).
+list_file(ListString, List) :- list_file(ListString, [], List).
+
+% количество заданных символов в листе (здесь буква A)
+count_chr_in([], _, Count, Count) :- !.
+count_chr_in([H|T], Chr, CurCount, Count) :-
+  (H = Chr ->
+  CurCount1 is CurCount + 1;
+  CurCount1 is CurCount),
+  count_chr_in(T, Chr, CurCount1, Count).
+count_chr_in(List, Chr, Count) :- count_chr_in(List, Chr, 0, Count).
+count_chr_in(List, Count) :- count_chr_in(List, 65, Count).
+
+% лист из строк, где кол-во букв A больше среднего на файл
+list_where_A_more_than_AVG([], _, List, List) :- !.
+list_where_A_more_than_AVG([H|T], Count, CurList, List) :-
+  count_chr_in(H, CurCount),
+  (CurCount > Count ->
+  append(CurList, [H], CurList1);
+  CurList1 = CurList),
+  list_where_A_more_than_AVG(T, Count, CurList1, List).
+list_where_A_more_than_AVG(ListString, Count, List) :- list_where_A_more_than_AVG(ListString, Count, [], List).
+
+t1_3 :-
+  see0, read_list_str(ListString),
+  list_file(ListString, List),
+  count_chr_in(List, CountChr),
+  count_els(ListString, CountString),
+  (CountString \= 0 ->
+  AVG is CountChr / CountString;
+  fail),
+  list_where_A_more_than_AVG(ListString, AVG, ListWhere),
+  write_list_str(ListWhere), seen.
+
 % Задание 1.4
 % получаем строку без первых пробелов
 list_nofirstspaces([], []) :- !.
@@ -152,9 +191,9 @@ regular_word([H|T], Count, CurWord, Word) :-
 regular_word(List, Word) :- regular_word(List, 0, [], Word).
 
 t1_4 :-
-  see0, read_list_str(List), seen,
+  see0, read_list_str(List),
   list_of_words_file(List, LWF),
   regular_word(LWF, Word),
   write("Regular word => ["),
   write_str(Word),
-  write("]").
+  write("]"), seen.
