@@ -1,3 +1,14 @@
+% читаем строку нефиксированной длины (пока не встретим enter)
+read_str_nofix(A) :-
+  get0(X),
+  r_str_nofix(X, A, []).
+r_str_nofix(10, A, A) :- !.
+r_str_nofix(-1, A, A) :- !.
+r_str_nofix(X, A, B) :-
+  append(B, [X], B1),
+  get0(X1),
+  r_str_nofix(X1, A, B1).
+
 % читаем строку
 read_str(A, N, Flag) :-
   get0(X),
@@ -35,7 +46,7 @@ write_list_str([H|T]) :-
 see0 :- see('C:/Users/¬ладислав/Desktop/Prolog/lab8/in.txt').
 tell0 :- tell('C:/Users/¬ладислав/Desktop/Prolog/lab8/out.txt').
 
-% количество символов в списке
+% количество элементов в списке
 count_els([], Count, Count) :- !.
 count_els([_|T], CurCount, Count) :- 
   CurCount1 is CurCount + 1, 
@@ -68,12 +79,82 @@ count_lines_without_spaces([BigH|BigT], CurCount, Count) :-
   CurCount1 is CurCount),
   count_lines_without_spaces(BigT, CurCount1, Count).
 
+% «адание 1.1
 t1_1 :-
   see0, read_list_str(List), 
   length_of_max_line(List, Max),
   seen, write("Max length => "), write(Max).
 
+% «адание 1.2
 t1_2 :-
   see0, read_list_str(List),
   count_lines_without_spaces(List, 0, Count),
   seen, write("Count => "), write(Count).
+
+% «адание 1.4
+% получаем строку без первых пробелов
+list_nofirstspaces([], []) :- !.
+list_nofirstspaces([H|T], [H|T]) :- H \= 32, !.
+list_nofirstspaces([_|T], NewList) :- list_nofirstspaces(T, NewList).
+
+% получаем слово до первого пробела (работает, если в начале нет пробелов)
+firstword([], Word, Word) :- !.
+firstword([H|_], Word, Word) :- H = 32, !.
+firstword([H|T], CurWord, NewWord) :-
+  append(CurWord, [H], CurWord1),
+  firstword(T, CurWord1, NewWord).
+firstword(List, Word) :- firstword(List, [], Word).
+
+% получаем первое слово несмотр€ на пробелы
+firstword_nfs(List, Word) :-
+  list_nofirstspaces(List, ListNFS),
+  firstword(ListNFS, Word).
+
+% получаем список слов из строки
+list_of_words(List, LW, LW) :-
+  list_nofirstspaces(List, ListNFS),
+  ListNFS = [], !.
+list_of_words(Str, CurLW, LW) :-
+  list_nofirstspaces(Str, StrNFS),
+  firstword(StrNFS, Word),
+  append(Word, StrNoWord, StrNFS),
+  append(CurLW, [Word], CurLW1),
+  list_of_words(StrNoWord, CurLW1, LW).
+list_of_words(Str, LW) :- list_of_words(Str, [], LW).
+
+% получаем список слов из файла
+list_of_words_file([], LWF, LWF) :- !.
+list_of_words_file([H|T], CurLWF, LWF) :-
+  list_of_words(H, LW),
+  append(CurLWF, LW, CurLWF1),
+  list_of_words_file(T, CurLWF1, LWF).
+list_of_words_file(ListOfLines, LWF) :- list_of_words_file(ListOfLines, [], LWF).
+
+% число раз, которое повтор€етс€ заданный элемент в списке
+count_equals([], _, Count, Count) :- !.
+count_equals([H|T], El, CurCount, Count) :- 
+  (H = El -> 
+  CurCount1 is CurCount + 1; 
+  CurCount1 is CurCount), 
+  count_equals(T, El, CurCount1, Count).
+count_equals(List, El, Count) :- count_equals(List, El, 0, Count).
+
+% слово, которое встречаетс€ чаще всего
+regular_word([], _, Word, Word) :- !.
+regular_word([H|T], Count, CurWord, Word) :-
+  count_equals([H|T], H, Count1),
+  (Count1 > Count ->
+  (CurWord1 = H,
+  Count2 = Count1);
+  (CurWord1 = CurWord,
+  Count2 = Count)),
+  regular_word(T, Count2, CurWord1, Word).
+regular_word(List, Word) :- regular_word(List, 0, [], Word).
+
+t1_4 :-
+  see0, read_list_str(List), seen,
+  list_of_words_file(List, LWF),
+  regular_word(LWF, Word),
+  write("Regular word => ["),
+  write_str(Word),
+  write("]").
