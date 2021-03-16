@@ -270,3 +270,23 @@ t1_5 :-
   tell0,
   write_list_str(LWFNR),
   told.
+
+% Задание 2.12
+% цифры в начале, буквы в конце
+digits_first_letters_second([], ListDigits, ListLetters, List) :- append(ListDigits, ListLetters, List), !.
+digits_first_letters_second([H|T], ListDigits, ListLetters, List) :-
+  ((H >= 48, H =< 57) ->
+  (append(ListDigits, [H], ListDigits1),
+  ListLetters1 = ListLetters);
+  (append(ListLetters, [H], ListLetters1),
+  ListDigits1 = ListDigits)),
+  digits_first_letters_second(T, ListDigits1, ListLetters1, List).
+digits_first_letters_second(List, NewList) :- digits_first_letters_second(List, [], [], NewList).
+
+t2_12 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  digits_first_letters_second(S, NewS),
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
