@@ -300,7 +300,7 @@ words_rnd_chrs([H|T], CurWords, Words) :-
   append([First|RandomList], [Last], RandomH),
   append(CurWords, [RandomH], CurWords1))),
   words_rnd_chrs(T, CurWords1, Words).
-words_rnd_chrs(Words, NewWords) :- words_rnd_chrs(Words, [], NewWords).
+words_rnd_chrs(Words, NewWords) :- words_rnd_chrs(Words, [], NewWords), !.
 
 % составим список слов
 % далее будет вытаскивать слово из списка и ставить после него пробел
@@ -376,3 +376,81 @@ t2_13 :-
   write("New Str => ["),
   write_str(NewS),
   write("]").
+
+% Задание 3
+% переводим list в год
+list_to_year([X1, X2, X3, X4], Year) :-
+  X11 is X1 - 48,
+  X21 is X2 - 48,
+  X31 is X3 - 48,
+  X41 is X4 - 48,
+  Year is (X11 * 1000 + X21 * 100 + X31 * 10 + X41).
+
+% сначала факты (месяцы в формате: января, февраля, и т д)
+month(1, L) :- L = [1103, 1085, 1074, 1072, 1088, 1103], !.
+month(2, L) :- L = [1092, 1077, 1074, 1088, 1072, 1083, 1103], !.
+month(3, L) :- L = [1084, 1072, 1088, 1090, 1072], !.
+month(4, L) :- L = [1072, 1087, 1088, 1077, 1083, 1103], !.
+month(5, L) :- L = [1084, 1072, 1103], !.
+month(6, L) :- L = [1080, 1102, 1085, 1103], !.
+month(7, L) :- L = [1080, 1102, 1083, 1103], !.
+month(8, L) :- L = [1072, 1074, 1075, 1091, 1089, 1090, 1072], !.
+month(9, L) :- L = [1089, 1077, 1085, 1090, 1103, 1073, 1088, 1103], !.
+month(10, L) :- L = [1086, 1082, 1090, 1103, 1073, 1088, 1103], !.
+month(11, L) :- L = [1085, 1086, 1103, 1073, 1088, 1103], !.
+month(12, L) :- L = [1076, 1077, 1082, 1072, 1073, 1088, 1103], !.
+
+% факты (дни - день/месяц/год)
+day([X1, X2], _, _) :- (X1 = 48, X2 >= 49, X2 =< 57), !.
+day([X1, X2], _, _) :- (X1 = 49, X2 >= 48, X2 =< 57), !.
+day([X1, X2], _, _) :- (X1 = 50, X2 >= 48, X2 =< 56), !.
+day([X1, X2], M, Y) :- (X1 = 50, X2 = 57, M = 2, 0 is Y mod 4), !.
+day([X1, X2], M, _) :- (X1 = 51, X2 = 48, M \= 2), !.
+day([X1, X2], M, _) :- (X1 = 51, X2 = 49, (M = 1 | M = 3 | M = 5 | M = 7 | M = 8 | M = 10 | M = 12)), !.
+
+% год
+year([X1, X2, X3, X4]) :- (X1 >= 48, X1 =< 57, X2 >= 48, X2 =< 57, X3 >= 48, X3 =< 57, X4 >= 48, X4 =< 57).
+
+% состоит ли список только из пробелов
+only_spaces([]) :- !.
+only_spaces([H|T]) :-
+  (H = 32 ->
+  only_spaces(T);
+  fail).
+
+% читаем список и ищем совпадение "28 февраля 2005"
+find_date_in_str([], Dates, Dates) :- !.
+find_date_in_str(List, Dates, Dates) :- only_spaces(List), !.
+find_date_in_str(List, Dates, Dates) :-
+  list_of_words(List, Words),
+  count_els(Words, Count),
+  Count < 3, !.
+find_date_in_str([D1|DT], CurDates, Dates) :-
+  (([_|[D2|[32|ListNoDay]]] = [D1|DT],
+  [D1, D2] = WordDay,
+  firstword(ListNoDay, WordMonth),
+  month(Month, WordMonth),
+  append(WordMonth, ListNoMonth1, ListNoDay),
+  append([32], ListNoMonth, ListNoMonth1),
+  [Y1|[Y2|[Y3|[Y4|_]]]] = ListNoMonth,
+  [Y1, Y2, Y3, Y4] = WordYear,
+  year(WordYear),
+  list_to_year(WordYear, Year),
+  day(WordDay, Month, Year)
+  ) ->
+  (append(WordDay, [32], DS),
+  append(DS, WordMonth, DSM),
+  append(DSM, [32], DSMS),
+  append(DSMS, WordYear, DSMSY),
+  append(CurDates, [DSMSY], CurDates1),
+  append([Y1, Y2], NewT, ListNoMonth),
+  find_date_in_str(NewT, CurDates1, Dates));
+  (find_date_in_str(DT, CurDates, Dates))).
+find_date_in_str(Str, Dates) :- find_date_in_str(Str, [], Dates).
+
+t3 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  find_date_in_str(S, Dates),
+  write("Dates =>"), nl,
+  write_list_str(Dates).
