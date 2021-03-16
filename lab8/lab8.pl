@@ -454,3 +454,36 @@ t3 :-
   find_date_in_str(S, Dates),
   write("Dates =>"), nl,
   write_list_str(Dates).
+
+% «адание 4.12 ( ириллица: 1072-1105, != 1104)
+% формируем список из кодов кириллицы
+russian_codes_in_str([], List, List) :- !.
+russian_codes_in_str([H|T], CurList, List) :-
+  ((H >= 1072,
+  H =< 1105,
+  H \= 1104,
+  not(in_ls(CurList, H))
+  ) ->
+  append(CurList, [H], CurList1);
+  CurList1 = CurList),
+  russian_codes_in_str(T, CurList1, List).
+russian_codes_in_str(Str, List) :- russian_codes_in_str(Str, [], List).
+
+% формируем список из кодов кириллицы, не вход€щих в заданный
+russian_codes_out_str(_, 1106, List, List) :- !.
+russian_codes_out_str(ListCodes, CurCode, CurList, List) :-
+  ((not(in_ls(ListCodes, CurCode)), CurCode \= 1104) ->
+  append(CurList, [CurCode], CurList1);
+  CurList1 = CurList),
+  CurCode1 is CurCode + 1,
+  russian_codes_out_str(ListCodes, CurCode1, CurList1, List).
+russian_codes_out_str(ListCodes, List) :- russian_codes_out_str(ListCodes, 1072, [], List).
+
+t4_12 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  russian_codes_in_str(S, RCIN),
+  russian_codes_out_str(RCIN, RCOUT),
+  write("Russian codes out str => ["),
+  write_str(RCOUT),
+  write("]").
