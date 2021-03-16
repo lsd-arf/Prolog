@@ -197,3 +197,76 @@ t1_4 :-
   write("Regular word => ["),
   write_str(Word),
   write("]"), seen.
+
+% Задание 1.5
+% номер первого вхождения элемента
+ls_num_el([H], El, CurNum, Num) :- 
+  ((H = El) -> 
+  Num is CurNum + 1; 
+  write("Such element isn\'t found")), !.
+ls_num_el([H|T], El, CurNum, Num) :- 
+  CurNum1 is CurNum + 1, 
+  ((El = H) -> 
+  Num is CurNum1; 
+  ls_num_el(T, El, CurNum1, Num)).
+ls_num_el([H|T], El, Num) :- ls_num_el([H|T], El, 0, Num).
+
+% номер элемента в списке
+ls_el_at_num([], _, _, _) :- write("Such element isn\'t found"), !.
+ls_el_at_num([_], CurNum, Num, _) :- 
+  CurNum1 is CurNum + 1, 
+  CurNum1 < Num, 
+  write("Such element isn\'t found"), !.
+ls_el_at_num([H|T], CurNum, Num, El) :- 
+  CurNum1 is CurNum + 1, 
+  ((CurNum1 is Num) -> 
+  El is H; 
+  ls_el_at_num(T, CurNum1, Num, El)).
+ls_el_at_num([H|T], Num, El) :- ls_el_at_num([H|T], 0, Num, El).
+
+% есть ли элемент в списке
+in_ls([H|_], H) :- !.
+in_ls([_|T], El) :- in_ls(T, El).
+
+% получаем лист без элемента
+rm_el([_|T], CurList, Num, Num, NewList) :- append(CurList, T, NewList), !.
+rm_el([H|T], CurList, CurNum, Num, NewList) :- 
+  append(CurList, [H], CurList1), 
+  CurNum1 is CurNum + 1, 
+  rm_el(T, CurList1, CurNum1, Num, NewList).
+rm_el(List, Num, NewList) :- rm_el(List, [], 1, Num, NewList).
+
+% удаление одинаковых с заданным элементов
+rm_equals(List, El, List) :- not(in_ls(List, El)), !.
+rm_equals(List, El, NewList) :- 
+  ls_num_el(List, El, Num), 
+  rm_el(List, Num, List1), 
+  rm_equals(List1, El, NewList).
+
+% получаем лист из уникальных элементов
+uni_list([], []) :- !.
+uni_list([H|T], List) :-
+  rm_equals(T, H, RmList),
+  uni_list(RmList, List1),
+  append([H], List1, List).
+
+% лист из неповторяющихся элементов
+list_norepeat(_, [], List, List) :- !.
+list_norepeat(BigList, [UniH|UniT], CurList, NewList) :-
+  count_equals(BigList, UniH, Count),
+  (Count = 1 ->
+  append(CurList, [UniH], CurList1);
+  CurList1 = CurList),
+  list_norepeat(BigList, UniT, CurList1, NewList).
+list_norepeat(BigList, UniList, NewList) :- list_norepeat(BigList, UniList, [], NewList).
+
+t1_5 :-
+  see0,
+  read_list_str(ListStr),
+  list_of_words_file(ListStr, LWF),
+  uni_list(LWF, LWFUNI),
+  list_norepeat(LWF, LWFUNI, LWFNR),
+  seen,
+  tell0,
+  write_list_str(LWFNR),
+  told.
