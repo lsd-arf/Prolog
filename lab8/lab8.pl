@@ -271,6 +271,58 @@ t1_5 :-
   write_list_str(LWFNR),
   told.
 
+% Задание 2.6
+% псевдослучайное перемешивание листа из символов
+random_list_chrs([H1, H2], CurList, List) :-
+  ((0 is (H1 + H2) mod 3) ->
+  append(CurList, [H1, H2], List);
+  append(CurList, [H2, H1], List)), !.
+random_list_chrs([H1], CurList, List) :-
+  ((0 is H1 mod 3) ->
+  append(CurList, [H1], List);
+  append([H1], CurList, List)), !.
+random_list_chrs([], List, List) :- !.
+random_list_chrs([H1|[H2|[H3|T]]], CurList, List) :-
+  ((0 is (H1 + H2 + H3) mod 3) ->
+  append(CurList, [H3, H1, H2], CurList1);
+  append(CurList, [H2, H3, H1], CurList1)),
+  random_list_chrs(T, CurList1, List).
+random_list_chrs(List, NewList) :- random_list_chrs(List, [], NewList).
+
+% мешаем в каждом слове символы между первым и последним
+words_rnd_chrs([], Words, Words) :- !.
+words_rnd_chrs([H|T], CurWords, Words) :-
+  count_els(H, Count),
+  ((Count >= 1, Count =< 3) ->
+  append(CurWords, [H], CurWords1);
+  (append([First|HNoFirstNoLast], [Last], H),
+  random_list_chrs(HNoFirstNoLast, RandomList),
+  append([First|RandomList], [Last], RandomH),
+  append(CurWords, [RandomH], CurWords1))),
+  words_rnd_chrs(T, CurWords1, Words).
+words_rnd_chrs(Words, NewWords) :- words_rnd_chrs(Words, [], NewWords).
+
+% составим список слов
+% далее будет вытаскивать слово из списка и ставить после него пробел
+% после последнего слова списка пробел не ставим
+str_with1space([], Str, Str) :- write("Str hasn\'t words"), !.
+str_with1space([H], CurStr, Str) :- append(CurStr, H, Str), !.
+str_with1space([H|T], CurStr, Str) :-
+  append(H, [32], H1),
+  append(CurStr, H1, CurStr1),
+  str_with1space(T, CurStr1, Str).
+str_with1space(List, Str) :- str_with1space(List, [], Str).
+
+t2_6 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  list_of_words(S, LW),
+  words_rnd_chrs(LW, RLW),
+  str_with1space(RLW, NewS),
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
+
 % Задание 2.12
 % цифры в начале, буквы в конце
 digits_first_letters_second([], ListDigits, ListLetters, List) :- append(ListDigits, ListLetters, List), !.
@@ -314,17 +366,6 @@ random_list_words([H1|[H2|[H3|T]]], CurList, List) :-
   append(CurList, [H2, H3, H1], CurList1)),
   random_list_words(T, CurList1, List).
 random_list_words(List, NewList) :- random_list_words(List, [], NewList).
-
-% составим список слов
-% далее будет вытаскивать слово из списка и ставить после него пробел
-% после последнего слова списка пробел не ставим
-str_with1space([], Str, Str) :- write("Str hasn\'t words"), !.
-str_with1space([H], CurStr, Str) :- append(CurStr, H, Str), !.
-str_with1space([H|T], CurStr, Str) :-
-  append(H, [32], H1),
-  append(CurStr, H1, CurStr1),
-  str_with1space(T, CurStr1, Str).
-str_with1space(List, Str) :- str_with1space(List, [], Str).
 
 t2_13 :-
   write("Str -> "),
