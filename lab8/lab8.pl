@@ -290,3 +290,48 @@ t2_12 :-
   write("New Str => ["),
   write_str(NewS),
   write("]").
+
+% Задание 2.13
+% псевдослучайное перемешивание листа из слов
+random_list_words([H1, H2], CurList, List) :-
+  count_els(H1, Count1),
+  count_els(H2, Count2),
+  ((0 is (Count1 + Count2) mod 2) ->
+  append(CurList, [H1, H2], List);
+  append(CurList, [H2, H1], List)), !.
+random_list_words([H1], CurList, List) :-
+  count_els(H1, Count1),
+  ((0 is Count1 mod 2) ->
+  append(CurList, [H1], List);
+  append([H1], CurList, List)), !.
+random_list_words([], List, List) :- !.
+random_list_words([H1|[H2|[H3|T]]], CurList, List) :-
+  count_els(H1, Count1),
+  count_els(H2, Count2),
+  count_els(H3, Count3),
+  ((0 is (Count1 + Count2 + Count3) mod 2) ->
+  append(CurList, [H3, H1, H2], CurList1);
+  append(CurList, [H2, H3, H1], CurList1)),
+  random_list_words(T, CurList1, List).
+random_list_words(List, NewList) :- random_list_words(List, [], NewList).
+
+% составим список слов
+% далее будет вытаскивать слово из списка и ставить после него пробел
+% после последнего слова списка пробел не ставим
+str_with1space([], Str, Str) :- write("Str hasn\'t words"), !.
+str_with1space([H], CurStr, Str) :- append(CurStr, H, Str), !.
+str_with1space([H|T], CurStr, Str) :-
+  append(H, [32], H1),
+  append(CurStr, H1, CurStr1),
+  str_with1space(T, CurStr1, Str).
+str_with1space(List, Str) :- str_with1space(List, [], Str).
+
+t2_13 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  list_of_words(S, LW),
+  random_list_words(LW, RLW),
+  str_with1space(RLW, NewS),
+  write("New Str => ["),
+  write_str(NewS),
+  write("]").
