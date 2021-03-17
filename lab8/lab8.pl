@@ -220,7 +220,7 @@ ls_el_at_num([_], CurNum, Num, _) :-
 ls_el_at_num([H|T], CurNum, Num, El) :- 
   CurNum1 is CurNum + 1, 
   ((CurNum1 is Num) -> 
-  El is H; 
+  El = H; 
   ls_el_at_num(T, CurNum1, Num, El)).
 ls_el_at_num([H|T], Num, El) :- ls_el_at_num([H|T], 0, Num, El).
 
@@ -487,3 +487,45 @@ t4_12 :-
   write("Russian codes out str => ["),
   write_str(RCOUT),
   write("]").
+
+% Задание 5
+% получаем список длин строк
+list_of_lengths([], List, List) :- !.
+list_of_lengths([H|T], CurList, List) :-
+  count_els(H, Count),
+  append(CurList, [Count], CurList1),
+  list_of_lengths(T, CurList1, List).
+list_of_lengths(ListStrs, ListLengths) :- list_of_lengths(ListStrs, [], ListLengths).
+
+% минимальный элемент в списке
+min_ls_down([], Min, Min) :- !.
+min_ls_down([H|T], CurMin, Min) :- 
+  (H < CurMin -> 
+  CurMin1 is H; 
+  CurMin1 is CurMin), 
+  min_ls_down(T, CurMin1, Min).
+min_ls_down([H|T], Min) :- min_ls_down(T, H, Min).
+
+% упорядочиваем список строк по их длине
+sort_strs_by_length([], [], List, List) :- !.
+sort_strs_by_length(ListStrs, ListLengths, CurList, List) :-
+  min_ls_down(ListLengths, Min),
+  ls_num_el(ListLengths, Min, Num),
+  ls_el_at_num(ListStrs, Num, El),
+  append(CurList, [El], CurList1),
+  rm_el(ListStrs, Num, ListStrs1),
+  rm_el(ListLengths, Num, ListLengths1),
+  sort_strs_by_length(ListStrs1, ListLengths1, CurList1, List).
+sort_strs_by_length(ListStrs, NewListStrs) :-
+  list_of_lengths(ListStrs, ListLengths),
+  sort_strs_by_length(ListStrs, ListLengths, [], NewListStrs).
+
+% Кодировка ANSI везде
+t5 :-
+  see0,
+  read_list_str(ListStr),
+  sort_strs_by_length(ListStr, NewListStr),
+  seen,
+  tell0,
+  write_list_str(NewListStr),
+  told.
