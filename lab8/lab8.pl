@@ -717,3 +717,46 @@ t6 :-
   tell0,
   write_list_str(NewListStr),
   told.
+
+% Задание 7
+% проверка слова на число
+check_for_num([]) :- !.
+check_for_num([H|T]) :-
+  (H >= 48, H =< 57),
+  check_for_num(T).
+
+% количество слов, идущих после чисел в списке
+count_words_after_num([_], Count, Count) :- !.
+count_words_after_num([], Count, Count) :- !.
+count_words_after_num([H|T], CurCount, Count) :-
+  ((check_for_num(H)) ->
+  CurCount1 is CurCount + 1;
+  CurCount1 is CurCount),
+  count_words_after_num(T, CurCount1, Count).
+count_words_after_num(List, Count) :-
+  list_of_words(List, Words),
+  count_words_after_num(Words, 0, Count).
+
+% получаем список количества слов, идущих после чисел в каждом списке
+list_of_count_words_after_num([], List, List) :- !.
+list_of_count_words_after_num([H|T], CurList, List) :-
+  count_words_after_num(H, Count),
+  append(CurList, [Count], CurList1),
+  list_of_count_words_after_num(T, CurList1, List).
+list_of_count_words_after_num(ListStrs, ListCounts) :- list_of_count_words_after_num(ListStrs, [], ListCounts).
+
+% сортируем по количеству слов, идущих после чисел в каждом списке
+sort_strs_by_count_words_after_num(ListStrs, NewListStrs) :-
+  list_of_count_words_after_num(ListStrs, ListCounts),
+  sort_strs_by_length(ListStrs, ListCounts, [], NewListStrs).
+
+t7 :-
+  see0,
+  read_list_str(ListStr),
+  list_of_count_words_after_num(ListStr, Counts),
+  write(Counts),
+  sort_strs_by_count_words_after_num(ListStr, NewListStr),
+  seen,
+  tell0,
+  write_list_str(NewListStr),
+  told.
