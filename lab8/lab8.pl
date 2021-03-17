@@ -677,3 +677,43 @@ t5 :-
   tell0,
   write_list_str(NewListStr),
   told.
+
+% Задание 6
+% считаем количество слов
+% убираем первые пробелы
+% если новый список не пустой, убираем слово, считаем + 1
+% иначе слов не осталось, ничего не считаем
+% кидаем новый ListNoFirstWord или с (пробелами + словами), или пустой
+count_words([], Count, Count) :- !.
+count_words(List, CurCount, Count) :-
+  list_nofirstspaces(List, ListNoFirstSpaces),
+  (ListNoFirstSpaces \= [] ->
+  (firstword(ListNoFirstSpaces, FirstWord),
+  append(FirstWord, ListNoFirstWord, ListNoFirstSpaces),
+  CurCount1 is CurCount + 1);
+  (ListNoFirstWord = [],
+  CurCount1 is CurCount)),
+  count_words(ListNoFirstWord, CurCount1, Count).
+count_words(List, Count) :- count_words(List, 0, Count).
+
+% получаем список количества слов в каждой строке
+list_of_count_words([], List, List) :- !.
+list_of_count_words([H|T], CurList, List) :-
+  count_words(H, Count),
+  append(CurList, [Count], CurList1),
+  list_of_count_words(T, CurList1, List).
+list_of_count_words(ListStrs, ListCounts) :- list_of_count_words(ListStrs, [], ListCounts).
+
+% сортируем по количеству слов
+sort_strs_by_count(ListStrs, NewListStrs) :-
+  list_of_count_words(ListStrs, ListCounts),
+  sort_strs_by_length(ListStrs, ListCounts, [], NewListStrs).
+
+t6 :-
+  see0,
+  read_list_str(ListStr),
+  sort_strs_by_count(ListStr, NewListStr),
+  seen,
+  tell0,
+  write_list_str(NewListStr),
+  told.
