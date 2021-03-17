@@ -455,6 +455,129 @@ t3 :-
   write("Dates =>"), nl,
   write_list_str(Dates).
 
+% Задание 4.6
+% получаем первые n элементов списка
+first_n_els(_, 0, List, List) :- !.
+first_n_els([H|T], N, CurList, List) :-
+  append(CurList, [H], CurList1),
+  N1 is N - 1,
+  first_n_els(T, N1, CurList1, List).
+first_n_els(List, N, NewList) :- first_n_els(List, N, [], NewList).
+
+% получаем лист из всех n элементов, стоящих рядом
+% завершаем, когда количество элементов листа, по которому проходим, меньше N
+list_n_els(List, N, NewList, NewList) :-
+  count_els(List, Count),
+  Count < N, !.
+list_n_els([H|T], N, CurList, NewList) :-
+  first_n_els([H|T], N, FNE),
+  append(CurList, [FNE], CurList1),
+  list_n_els(T, N, CurList1, NewList).
+list_n_els(List, N, NewList) :- list_n_els(List, N, [], NewList).
+
+% формируем список из (1, N) рядом стоящих элементов
+list_from_1_to_n_els(_, 0, List, List) :- !.
+list_from_1_to_n_els(List, N, CurList, NewList) :-
+  list_n_els(List, N, ListN),
+  append(CurList, ListN, CurList1),
+  N1 is N - 1,
+  list_from_1_to_n_els(List, N1, CurList1, NewList).
+list_from_1_to_n_els(List, NewList) :-
+  count_els(List, Count),
+  list_from_1_to_n_els(List, Count, [], NewList).
+
+% получаем степень K для числа N
+degree_of_n(_, 0, Num, Num) :- !.
+degree_of_n(N, K, CurNum, Num) :-
+  K1 is K - 1,
+  CurNum1 is CurNum * N,
+  degree_of_n(N, K1, CurNum1, Num).
+degree_of_n(N, K, Num) :- degree_of_n(N, K, 1, Num).
+
+% число из листа
+num_from_l([], _, Num, Num) :- !.
+num_from_l([H|T], N, CurNum, Num) :-
+  H1 is H - 48,
+  degree_of_n(10, N, Deg10inN),
+  H2 is H1 * Deg10inN,
+  CurNum1 is CurNum + H2,
+  N1 is N - 1,
+  num_from_l(T, N1, CurNum1, Num).
+num_from_l(List, Num) :-
+  count_els(List, Count),
+  Count1 is Count - 1,
+  num_from_l(List, Count1, 0, Num).
+
+% формируем лист чисел из листа листов символов 0-9
+nums_from_ll([], List, List) :- !.
+nums_from_ll([H|T], CurList, List) :-
+  num_from_l(H, Num),
+  append(CurList, [Num], CurList1),
+  nums_from_ll(T, CurList1, List).
+nums_from_ll(LL, Nums) :- nums_from_ll(LL, [], Nums).
+
+% читаем числа в строке
+% отсекаем символы до первой цифры
+str_no_first_chrs_before_digit([], []) :- !.
+str_no_first_chrs_before_digit([H|T], [H|T]) :- (H >= 48, H =< 57), !.
+str_no_first_chrs_before_digit([_|T], List) :- str_no_first_chrs_before_digit(T, List).
+
+% читаем первое число в строке (работает только если первой идёт цифра)
+first_num([], List, List) :- !.
+first_num([H|_], List, List) :- not((H >= 48, H =< 57)), !.
+first_num([H|T], CurList, List) :-
+  ((H >= 48, H =< 57) ->
+  append(CurList, [H], CurList1);
+  CurList1 = CurList),
+  first_num(T, CurList1, List).
+first_num(Str, List) :- first_num(Str, [], List).
+
+% читаем все числа в строке
+str_nums([], Nums, Nums) :- !.
+str_nums(Str, Nums, Nums) :-
+  str_no_first_chrs_before_digit(Str, Str1),
+  [] = Str1, !.
+str_nums(Str, CurNums, Nums) :-
+  str_no_first_chrs_before_digit(Str, StrNoChrs),
+  ([] \= StrNoChrs ->
+  (first_num(StrNoChrs, Num),
+  append(CurNums, [Num], CurNums1),
+  append(Num, StrNoNum, StrNoChrs));
+  (StrNoNum = [],
+  CurNums1 = CurNums)),
+  str_nums(StrNoNum, CurNums1, Nums).
+str_nums(Str, Nums) :- str_nums(Str, [], Nums).
+
+% все возможные числа в строке
+all_nums_in_str([], Nums, Nums) :- !.
+all_nums_in_str([H|T], CurNums, Nums) :-
+  list_from_1_to_n_els(H, H1n),
+  append(CurNums, H1n, CurNums1),
+  all_nums_in_str(T, CurNums1, Nums).
+all_nums_in_str(Nums, AllNums) :- all_nums_in_str(Nums, [], AllNums).
+
+% числа, значение которых больше 5
+nums_which_more_than_5([], Nums, Nums) :- !.
+nums_which_more_than_5([H|T], CurNums, Nums) :-
+  (H > 5 ->
+  append(CurNums, [H], CurNums1);
+  CurNums1 = CurNums),
+  nums_which_more_than_5(T, CurNums1, Nums).
+nums_which_more_than_5(List, Nums) :- nums_which_more_than_5(List, [], Nums).
+
+% составляю уникальный лист только после перевода символов в числа
+% иначе получается ситуация, что 06 и 6 - разные числа
+t4_6 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  str_nums(S, Nums),
+  all_nums_in_str(Nums, AllNums),
+  nums_from_ll(AllNums, TrueNums),
+  uni_list(TrueNums, UniTrueNums),
+  nums_which_more_than_5(UniTrueNums, UniTrueNumsMoreThan5),
+  write("Nums more than 5 =>"), nl,
+  write(UniTrueNumsMoreThan5).
+
 % Задание 4.12 (Кириллица: 1072-1105, != 1104)
 % формируем список из кодов кириллицы
 russian_codes_in_str([], List, List) :- !.
