@@ -611,6 +611,31 @@ t4_12 :-
   write_str(RCOUT),
   write("]").
 
+% Задание 4.13
+% максимальный элемент
+max_ls_down([], Max, Max) :- !.
+max_ls_down([H|T], CurMax, Max) :- 
+  (H > CurMax -> 
+  CurMax1 is H; 
+  CurMax1 is CurMax), 
+  max_ls_down(T, CurMax1, Max).
+max_ls_down([H|T], Max) :- max_ls_down(T, H, Max).
+
+t4_13 :-
+  write("Str -> "),
+  read_str_nofix(S),
+  str_nums(S, Nums),
+  all_nums_in_str(Nums, AllNums),
+  nums_from_ll(AllNums, TrueNums),
+  uni_list(TrueNums, UniTrueNums),
+  (UniTrueNums \= [] ->
+  max_ls_down(UniTrueNums, Max);
+  Max = -1),
+  (Max > 0 ->
+  (write("Natural max => "),
+  write(Max));
+  write("Natural max isn\'t exist")).
+
 % Задание 5
 % получаем список длин строк
 list_of_lengths([], List, List) :- !.
