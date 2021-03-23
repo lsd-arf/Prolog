@@ -89,6 +89,7 @@ pr_sochet_p :-
   write_str(B), nl, fail.
 
 % Задание 2
+% все слова длины 5, в которых ровно 2 буквы a
 words_length_5_where_2_a(_, Count, 5, Word) :-
   Count = 2,
   write_str(Word), nl, !, fail.
@@ -102,3 +103,81 @@ words_length_5_where_2_a(List, CurCount, CurLength, CurWord) :-
   CurLength1 is CurLength + 1,
   words_length_5_where_2_a(List, CurCount1, CurLength1, CurWord1).
 words_length_5_where_2_a(List) :- words_length_5_where_2_a(List, 0, 0, []).
+
+pr2 :-
+  read_str(A, _),
+  words_length_5_where_2_a(A).
+
+% Задание 3
+% номер первого вхождения элемента
+ls_num_el([H], El, CurNum, Num) :- 
+  ((H = El) -> 
+  Num is CurNum + 1; 
+  write("Such element isn\'t found")), !.
+ls_num_el([H|T], El, CurNum, Num) :- 
+  CurNum1 is CurNum + 1, 
+  ((El = H) -> 
+  Num is CurNum1; 
+  ls_num_el(T, El, CurNum1, Num)).
+ls_num_el([H|T], El, Num) :- ls_num_el([H|T], El, 0, Num).
+
+% номер элемента в списке
+ls_el_at_num([], _, _, _) :- write("Such element isn\'t found"), !.
+ls_el_at_num([_], CurNum, Num, _) :- 
+  CurNum1 is CurNum + 1, 
+  CurNum1 < Num, 
+  write("Such element isn\'t found"), !.
+ls_el_at_num([H|T], CurNum, Num, El) :- 
+  CurNum1 is CurNum + 1, 
+  ((CurNum1 is Num) -> 
+  El = H; 
+  ls_el_at_num(T, CurNum1, Num, El)).
+ls_el_at_num([H|T], Num, El) :- ls_el_at_num([H|T], 0, Num, El).
+
+% есть ли элемент в списке
+in_ls([H|_], H) :- !.
+in_ls([_|T], El) :- in_ls(T, El).
+
+% получаем лист без элемента
+rm_el([_|T], CurList, Num, Num, NewList) :- append(CurList, T, NewList), !.
+rm_el([H|T], CurList, CurNum, Num, NewList) :- 
+  append(CurList, [H], CurList1), 
+  CurNum1 is CurNum + 1, 
+  rm_el(T, CurList1, CurNum1, Num, NewList).
+rm_el(List, Num, NewList) :- rm_el(List, [], 1, Num, NewList).
+
+% удаление одинаковых с заданным элементов
+rm_equals(List, El, List) :- not(in_ls(List, El)), !.
+rm_equals(List, El, NewList) :- 
+  ls_num_el(List, El, Num), 
+  rm_el(List, Num, List1), 
+  rm_equals(List1, El, NewList).
+
+% получаем лист из уникальных элементов
+uni_list([], []) :- !.
+uni_list([H|T], List) :-
+  rm_equals(T, H, RmList),
+  uni_list(RmList, List1),
+  append([H], List1, List).
+
+% все слова длины 5, в которых ровно 2 буквы a, остальные буквы не повторяются
+words_length_5_where_2_a_other_uni(_, Count, 5, Word) :-
+  Count = 2,
+  in_list_exclude(Word, 97, Word1),
+  in_list_exclude(Word1, 97, Word2),
+  uni_list(Word2, Word2),
+  write_str(Word), nl, !, fail.
+words_length_5_where_2_a_other_uni(_, _, 5, _) :- !, fail.
+words_length_5_where_2_a_other_uni(List, CurCount, CurLength, CurWord) :-
+  in_list(List, El),
+  (El = 97 ->
+  CurCount1 is CurCount + 1;
+  CurCount1 is CurCount),
+  append(CurWord, [El], CurWord1),
+  CurLength1 is CurLength + 1,
+  words_length_5_where_2_a_other_uni(List, CurCount1, CurLength1, CurWord1).
+words_length_5_where_2_a_other_uni(List) :- words_length_5_where_2_a_other_uni(List, 0, 0, []).
+
+pr3 :-
+  read_str(A, _),
+  words_length_5_where_2_a_other_uni(A).
