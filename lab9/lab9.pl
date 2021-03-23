@@ -219,3 +219,28 @@ words_length_5_where_2_let_other_uni(List) :- words_length_5_where_2_let_other_u
 pr4 :-
   read_str(A, _),
   words_length_5_where_2_let_other_uni(A).
+
+% Задание 5
+% все слова длины 6, в которых 2 буквы повторяются 2 раза, остальные не повторяются
+words_length_6_where_2_let_2_time_other_uni(_, 6, Word) :-
+  uni_list(Word, Uni),
+  let_2_time(Word, Uni, El1),
+  in_list_exclude(Word, El1, Word1),
+  in_list_exclude(Word1, El1, WordNoEl1),
+  uni_list(WordNoEl1, UniNoEl1),
+  let_2_time(WordNoEl1, UniNoEl1, El2),
+  in_list_exclude(WordNoEl1, El2, Word2),
+  in_list_exclude(Word2, El2, WordNoEl2),
+  uni_list(WordNoEl2, WordNoEl2),
+  write_str(Word), nl, !, fail.
+words_length_6_where_2_let_2_time_other_uni(_, 6, _) :- !, fail.
+words_length_6_where_2_let_2_time_other_uni(List, CurLength, CurWord) :-
+  in_list(List, El),
+  append(CurWord, [El], CurWord1),
+  CurLength1 is CurLength + 1,
+  words_length_6_where_2_let_2_time_other_uni(List, CurLength1, CurWord1).
+words_length_6_where_2_let_2_time_other_uni(List) :- words_length_6_where_2_let_2_time_other_uni(List, 0, []).
+
+pr5 :-
+  read_str(A, _),
+  words_length_6_where_2_let_2_time_other_uni(A).
