@@ -206,6 +206,7 @@ words_length_5_where_2_let_other_uni(_, 5, Word) :-
   let_2_time(Word, Uni, El),
   in_list_exclude(Word, El, Word1),
   in_list_exclude(Word1, El, Word2),
+
   uni_list(Word2, Word2),
   write_str(Word), nl, !, fail.
 words_length_5_where_2_let_other_uni(_, 5, _) :- !, fail.
@@ -227,10 +228,12 @@ words_length_6_where_2_let_2_time_other_uni(_, 6, Word) :-
   let_2_time(Word, Uni, El1),
   in_list_exclude(Word, El1, Word1),
   in_list_exclude(Word1, El1, WordNoEl1),
+
   uni_list(WordNoEl1, UniNoEl1),
   let_2_time(WordNoEl1, UniNoEl1, El2),
   in_list_exclude(WordNoEl1, El2, Word2),
   in_list_exclude(Word2, El2, WordNoEl2),
+
   uni_list(WordNoEl2, WordNoEl2),
   write_str(Word), nl, !, fail.
 words_length_6_where_2_let_2_time_other_uni(_, 6, _) :- !, fail.
@@ -260,10 +263,12 @@ words_length_7_where_1let_2_2let_3_other_uni(_, 7, Word) :-
   let_2_time(Word, Uni, El1),
   in_list_exclude(Word, El1, Word1),
   in_list_exclude(Word1, El1, WordNoEl1),
+
   uni_list(WordNoEl1, UniNoEl1),
   let_3_time(WordNoEl1, UniNoEl1, El2),
   in_list_exclude(WordNoEl1, El2, Word2),
   in_list_exclude(Word2, El2, WordNoEl2),
+
   uni_list(WordNoEl2, WordNoEl2),
   write_str(Word), nl, !, fail.
 words_length_7_where_1let_2_2let_3_other_uni(_, 7, _) :- !, fail.
@@ -277,3 +282,38 @@ words_length_7_where_1let_2_2let_3_other_uni(List) :- words_length_7_where_1let_
 pr6 :-
   read_str(A, _),
   words_length_7_where_1let_2_2let_3_other_uni(A).
+
+% Задание 7
+% все слова длины 9
+% 2 буквы повторяются 2 раза
+% 1 буква повторяется 3 раза
+% остальные буквы не повторяются
+words_length_9_where_2let_2_1let_3_other_uni(_, 9, Word) :-
+  uni_list(Word, Uni),
+  let_2_time(Word, Uni, El1),
+  in_list_exclude(Word, El1, Word1),
+  in_list_exclude(Word1, El1, WordNoEl1),
+
+  uni_list(WordNoEl1, UniNoEl1),
+  let_2_time(WordNoEl1, UniNoEl1, El2),
+  in_list_exclude(WordNoEl1, El2, Word2),
+  in_list_exclude(Word2, El2, WordNoEl2),
+
+  uni_list(WordNoEl2, UniNoEl2),
+  let_3_time(WordNoEl2, UniNoEl2, El3),
+  in_list_exclude(WordNoEl2, El3, Word3),
+  in_list_exclude(Word3, El3, WordNoEl3),
+
+  uni_list(WordNoEl3, WordNoEl3),
+  write_str(Word), nl, !, fail.
+words_length_9_where_2let_2_1let_3_other_uni(_, 9, _) :- !, fail.
+words_length_9_where_2let_2_1let_3_other_uni(List, CurLength, CurWord) :-
+  in_list(List, El),
+  append(CurWord, [El], CurWord1),
+  CurLength1 is CurLength + 1,
+  words_length_9_where_2let_2_1let_3_other_uni(List, CurLength1, CurWord1).
+words_length_9_where_2let_2_1let_3_other_uni(List) :- words_length_9_where_2let_2_1let_3_other_uni(List, 0, []).
+
+pr7 :-
+  read_str(A, _),
+  words_length_9_where_2let_2_1let_3_other_uni(A).
