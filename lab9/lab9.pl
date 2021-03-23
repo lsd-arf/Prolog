@@ -337,3 +337,23 @@ words_length_4_where_more_2_a(List) :- words_length_4_where_more_2_a(List, 0, 0,
 pr8 :-
   read_str(A, _),
   words_length_4_where_more_2_a(A).
+
+% Задание 9
+% все слова длины 7, в которых больше 2 букв a
+words_length_7_where_more_2_a(_, Count, 7, Word) :-
+  Count > 2,
+  write_str(Word), nl, !, fail.
+words_length_7_where_more_2_a(_, _, 7, _) :- !, fail.
+words_length_7_where_more_2_a(List, CurCount, CurLength, CurWord) :-
+  in_list(List, El),
+  (El = 97 ->
+  CurCount1 is CurCount + 1;
+  CurCount1 is CurCount),
+  append(CurWord, [El], CurWord1),
+  CurLength1 is CurLength + 1,
+  words_length_7_where_more_2_a(List, CurCount1, CurLength1, CurWord1).
+words_length_7_where_more_2_a(List) :- words_length_7_where_more_2_a(List, 0, 0, []).
+
+pr9 :-
+  read_str(A, _),
+  words_length_7_where_more_2_a(A).
