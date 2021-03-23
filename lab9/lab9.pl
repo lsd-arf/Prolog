@@ -90,23 +90,23 @@ pr_sochet_p :-
 
 % Задание 2
 % все слова длины 5, в которых ровно 2 буквы a
-words_length_5_where_2_a(_, Count, 5, Word) :-
+words_t2(_, Count, 5, Word) :-
   Count = 2,
   write_str(Word), nl, !, fail.
-words_length_5_where_2_a(_, _, 5, _) :- !, fail.
-words_length_5_where_2_a(List, CurCount, CurLength, CurWord) :-
+words_t2(_, _, 5, _) :- !, fail.
+words_t2(List, CurCount, CurLength, CurWord) :-
   in_list(List, El),
   (El = 97 ->
   CurCount1 is CurCount + 1;
   CurCount1 is CurCount),
   append(CurWord, [El], CurWord1),
   CurLength1 is CurLength + 1,
-  words_length_5_where_2_a(List, CurCount1, CurLength1, CurWord1).
-words_length_5_where_2_a(List) :- words_length_5_where_2_a(List, 0, 0, []).
+  words_t2(List, CurCount1, CurLength1, CurWord1).
+words_t2(List) :- words_t2(List, 0, 0, []).
 
-pr2 :-
+t2 :-
   read_str(A, _),
-  words_length_5_where_2_a(A).
+  words_t2(A).
 
 % Задание 3
 % номер первого вхождения элемента
@@ -161,26 +161,25 @@ uni_list([H|T], List) :-
   append([H], List1, List).
 
 % все слова длины 5, в которых ровно 2 буквы a, остальные буквы не повторяются
-words_length_5_where_2_a_other_uni(_, Count, 5, Word) :-
+words_t3(_, Count, 5, Word) :-
   Count = 2,
-  in_list_exclude(Word, 97, Word1),
-  in_list_exclude(Word1, 97, Word2),
-  uni_list(Word2, Word2),
+  rm_equals(Word, 97, WordNo97),
+  uni_list(WordNo97, WordNo97),
   write_str(Word), nl, !, fail.
-words_length_5_where_2_a_other_uni(_, _, 5, _) :- !, fail.
-words_length_5_where_2_a_other_uni(List, CurCount, CurLength, CurWord) :-
+words_t3(_, _, 5, _) :- !, fail.
+words_t3(List, CurCount, CurLength, CurWord) :-
   in_list(List, El),
   (El = 97 ->
   CurCount1 is CurCount + 1;
   CurCount1 is CurCount),
   append(CurWord, [El], CurWord1),
   CurLength1 is CurLength + 1,
-  words_length_5_where_2_a_other_uni(List, CurCount1, CurLength1, CurWord1).
-words_length_5_where_2_a_other_uni(List) :- words_length_5_where_2_a_other_uni(List, 0, 0, []).
+  words_t3(List, CurCount1, CurLength1, CurWord1).
+words_t3(List) :- words_t3(List, 0, 0, []).
 
-pr3 :-
+t3 :-
   read_str(A, _),
-  words_length_5_where_2_a_other_uni(A).
+  words_t3(A).
 
 % Задание 4
 % количество заданных элементов в листе
@@ -201,52 +200,49 @@ let_2_time(List, [UniH|UniT], El) :-
   let_2_time(List, UniT, El)).
 
 % все слова длины 5, в которых одна буква повторяется 2 раза, остальные буквы не повторяются
-words_length_5_where_2_let_other_uni(_, 5, Word) :-
+words_t4(_, 5, Word) :-
   uni_list(Word, Uni),
   let_2_time(Word, Uni, El),
-  in_list_exclude(Word, El, Word1),
-  in_list_exclude(Word1, El, Word2),
+  rm_equals(Word, El, WordNoEl),
 
-  uni_list(Word2, Word2),
+  uni_list(WordNoEl, WordNoEl),
   write_str(Word), nl, !, fail.
-words_length_5_where_2_let_other_uni(_, 5, _) :- !, fail.
-words_length_5_where_2_let_other_uni(List, CurLength, CurWord) :-
+words_t4(_, 5, _) :- !, fail.
+words_t4(List, CurLength, CurWord) :-
   in_list(List, El),
   append(CurWord, [El], CurWord1),
   CurLength1 is CurLength + 1,
-  words_length_5_where_2_let_other_uni(List, CurLength1, CurWord1).
-words_length_5_where_2_let_other_uni(List) :- words_length_5_where_2_let_other_uni(List, 0, []).
+  words_t4(List, CurLength1, CurWord1).
+words_t4(List) :- words_t4(List, 0, []).
 
-pr4 :-
+t4 :-
   read_str(A, _),
-  words_length_5_where_2_let_other_uni(A).
+  words_t4(A).
 
 % Задание 5
 % все слова длины 6, в которых 2 буквы повторяются 2 раза, остальные не повторяются
-words_length_6_where_2_let_2_time_other_uni(_, 6, Word) :-
+words_t5(_, 6, Word) :-
   uni_list(Word, Uni),
   let_2_time(Word, Uni, El1),
-  in_list_exclude(Word, El1, Word1),
-  in_list_exclude(Word1, El1, WordNoEl1),
+  rm_equals(Word, El1, WordNoEl1),
 
   uni_list(WordNoEl1, UniNoEl1),
   let_2_time(WordNoEl1, UniNoEl1, El2),
-  in_list_exclude(WordNoEl1, El2, Word2),
-  in_list_exclude(Word2, El2, WordNoEl2),
+  rm_equals(WordNoEl1, El2, WordNoEl2),
 
   uni_list(WordNoEl2, WordNoEl2),
   write_str(Word), nl, !, fail.
-words_length_6_where_2_let_2_time_other_uni(_, 6, _) :- !, fail.
-words_length_6_where_2_let_2_time_other_uni(List, CurLength, CurWord) :-
+words_t5(_, 6, _) :- !, fail.
+words_t5(List, CurLength, CurWord) :-
   in_list(List, El),
   append(CurWord, [El], CurWord1),
   CurLength1 is CurLength + 1,
-  words_length_6_where_2_let_2_time_other_uni(List, CurLength1, CurWord1).
-words_length_6_where_2_let_2_time_other_uni(List) :- words_length_6_where_2_let_2_time_other_uni(List, 0, []).
+  words_t5(List, CurLength1, CurWord1).
+words_t5(List) :- words_t5(List, 0, []).
 
-pr5 :-
+t5 :-
   read_str(A, _),
-  words_length_6_where_2_let_2_time_other_uni(A).
+  words_t5(A).
 
 % Задание 6
 % в листе есть буква, которая повторяется 3 раза
@@ -258,105 +254,100 @@ let_3_time(List, [UniH|UniT], El) :-
   let_3_time(List, UniT, El)).
 
 % все слова длины 7, в которых 1 буква повторяется 2 раза, 1 буква 3 раза, остальные не повторяются
-words_length_7_where_1let_2_2let_3_other_uni(_, 7, Word) :-
+words_t6(_, 7, Word) :-
   uni_list(Word, Uni),
   let_2_time(Word, Uni, El1),
-  in_list_exclude(Word, El1, Word1),
-  in_list_exclude(Word1, El1, WordNoEl1),
+  rm_equals(Word, El1, WordNoEl1),
 
   uni_list(WordNoEl1, UniNoEl1),
   let_3_time(WordNoEl1, UniNoEl1, El2),
-  in_list_exclude(WordNoEl1, El2, Word2),
-  in_list_exclude(Word2, El2, WordNoEl2),
+  rm_equals(WordNoEl1, El2, WordNoEl2),
 
   uni_list(WordNoEl2, WordNoEl2),
   write_str(Word), nl, !, fail.
-words_length_7_where_1let_2_2let_3_other_uni(_, 7, _) :- !, fail.
-words_length_7_where_1let_2_2let_3_other_uni(List, CurLength, CurWord) :-
+words_t6(_, 7, _) :- !, fail.
+words_t6(List, CurLength, CurWord) :-
   in_list(List, El),
   append(CurWord, [El], CurWord1),
   CurLength1 is CurLength + 1,
-  words_length_7_where_1let_2_2let_3_other_uni(List, CurLength1, CurWord1).
-words_length_7_where_1let_2_2let_3_other_uni(List) :- words_length_7_where_1let_2_2let_3_other_uni(List, 0, []).
+  words_t6(List, CurLength1, CurWord1).
+words_t6(List) :- words_t6(List, 0, []).
 
-pr6 :-
+t6 :-
   read_str(A, _),
-  words_length_7_where_1let_2_2let_3_other_uni(A).
+  words_t6(A).
 
 % Задание 7
 % все слова длины 9
 % 2 буквы повторяются 2 раза
 % 1 буква повторяется 3 раза
 % остальные буквы не повторяются
-words_length_9_where_2let_2_1let_3_other_uni(_, 9, Word) :-
+words_t7(_, 9, Word) :-
   uni_list(Word, Uni),
   let_2_time(Word, Uni, El1),
-  in_list_exclude(Word, El1, Word1),
-  in_list_exclude(Word1, El1, WordNoEl1),
+  rm_equals(Word, El1, WordNoEl1),
 
   uni_list(WordNoEl1, UniNoEl1),
   let_2_time(WordNoEl1, UniNoEl1, El2),
-  in_list_exclude(WordNoEl1, El2, Word2),
-  in_list_exclude(Word2, El2, WordNoEl2),
+  rm_equals(WordNoEl1, El2, WordNoEl2),
 
   uni_list(WordNoEl2, UniNoEl2),
   let_3_time(WordNoEl2, UniNoEl2, El3),
-  in_list_exclude(WordNoEl2, El3, Word3),
-  in_list_exclude(Word3, El3, WordNoEl3),
+  rm_equals(WordNoEl2, El2, WordNoEl3),
 
   uni_list(WordNoEl3, WordNoEl3),
   write_str(Word), nl, !, fail.
-words_length_9_where_2let_2_1let_3_other_uni(_, 9, _) :- !, fail.
-words_length_9_where_2let_2_1let_3_other_uni(List, CurLength, CurWord) :-
+words_t7(_, 9, _) :- !, fail.
+words_t7(List, CurLength, CurWord) :-
   in_list(List, El),
   append(CurWord, [El], CurWord1),
   CurLength1 is CurLength + 1,
-  words_length_9_where_2let_2_1let_3_other_uni(List, CurLength1, CurWord1).
-words_length_9_where_2let_2_1let_3_other_uni(List) :- words_length_9_where_2let_2_1let_3_other_uni(List, 0, []).
+  words_t7(List, CurLength1, CurWord1).
+words_t7(List) :- words_t7(List, 0, []).
 
-pr7 :-
+t7 :-
   read_str(A, _),
-  words_length_9_where_2let_2_1let_3_other_uni(A).
+  words_t7(A).
 
 % Задание 8
 % все слова длины 4, в которых больше 2 букв a
-words_length_4_where_more_2_a(_, Count, 4, Word) :-
+words_t8(_, Count, 4, Word) :-
   Count > 2,
   write_str(Word), nl, !, fail.
-words_length_4_where_more_2_a(_, _, 4, _) :- !, fail.
-words_length_4_where_more_2_a(List, CurCount, CurLength, CurWord) :-
+words_t8(_, _, 4, _) :- !, fail.
+words_t8(List, CurCount, CurLength, CurWord) :-
   in_list(List, El),
   (El = 97 ->
   CurCount1 is CurCount + 1;
   CurCount1 is CurCount),
   append(CurWord, [El], CurWord1),
   CurLength1 is CurLength + 1,
-  words_length_4_where_more_2_a(List, CurCount1, CurLength1, CurWord1).
-words_length_4_where_more_2_a(List) :- words_length_4_where_more_2_a(List, 0, 0, []).
+  words_t8(List, CurCount1, CurLength1, CurWord1).
+words_t8(List) :- words_t8(List, 0, 0, []).
 
-pr8 :-
+t8 :-
   read_str(A, _),
-  words_length_4_where_more_2_a(A).
+  words_t8(A).
 
 % Задание 9
 % все слова длины 7, в которых больше 2 букв a
-words_length_7_where_more_2_a(_, Count, 7, Word) :-
+words_t9(_, Count, 7, Word) :-
   Count > 2,
   write_str(Word), nl, !, fail.
-words_length_7_where_more_2_a(_, _, 7, _) :- !, fail.
-words_length_7_where_more_2_a(List, CurCount, CurLength, CurWord) :-
+words_t9(_, _, 7, _) :- !, fail.
+words_t9(List, CurCount, CurLength, CurWord) :-
   in_list(List, El),
   (El = 97 ->
   CurCount1 is CurCount + 1;
   CurCount1 is CurCount),
   append(CurWord, [El], CurWord1),
   CurLength1 is CurLength + 1,
-  words_length_7_where_more_2_a(List, CurCount1, CurLength1, CurWord1).
-words_length_7_where_more_2_a(List) :- words_length_7_where_more_2_a(List, 0, 0, []).
+  words_t9(List, CurCount1, CurLength1, CurWord1).
+words_t9(List) :- words_t9(List, 0, 0, []).
 
-pr9 :-
+t9 :-
   read_str(A, _),
-  words_length_7_where_more_2_a(A).
+  words_t9(A).
 
 % Задание 10
 % проверяем, 4 ли различных буквы в слове
@@ -368,19 +359,74 @@ check_4_letters_in_word(List, [UniH|UniT], Count) :-
   check_4_letters_in_word(List1, UniT, Count1).
 
 % все слова длины 7, в которых ровно 4 различных буквы
-words_length_7_where_4_lets(_, 7, Word) :-
+words_t10(_, 7, Word) :-
   uni_list(Word, Uni),
   check_4_letters_in_word(Word, Uni, 4),
 
   write_str(Word), nl, !, fail.
-words_length_7_where_4_lets(_, 7, _) :- !, fail.
-words_length_7_where_4_lets(List, CurLength, CurWord) :-
+words_t10(_, 7, _) :- !, fail.
+words_t10(List, CurLength, CurWord) :-
   in_list(List, El),
   append(CurWord, [El], CurWord1),
   CurLength1 is CurLength + 1,
-  words_length_7_where_4_lets(List, CurLength1, CurWord1).
-words_length_7_where_4_lets(List) :- words_length_7_where_4_lets(List, 0, []).
+  words_t10(List, CurLength1, CurWord1).
+words_t10(List) :- words_t10(List, 0, []).
 
-pr10 :-
+t10 :-
   read_str(A, _),
-  words_length_7_where_4_lets(A).
+  words_t10(A).
+
+% Задание 11. Вариант 12.
+% в листе есть буква, которая повторяется K раз
+let_k_time(_, [], _, _) :- !, fail.
+let_k_time(List, [UniH|UniT], K, El) :-
+  count_let_in_list(List, UniH, Count),
+  (Count = K ->
+  (El = UniH, true);
+  let_k_time(List, UniT, K, El)).
+
+% все слова длины N
+% a, b, c повторяются K раз
+% d повторяется M раз
+% остальные буквы не повторяются
+words_t11(_, N, Word, N, K, M) :-
+  uni_list(Word, Uni),
+  let_k_time(Word, Uni, K, El1),
+  El1 = 97,
+  rm_equals(Word, El1, WordNoEl1),
+
+  uni_list(WordNoEl1, UniNoEl1),
+  let_k_time(WordNoEl1, UniNoEl1, K, El2),
+  El2 = 98,
+  rm_equals(WordNoEl1, El2, WordNoEl2),
+
+  uni_list(WordNoEl2, UniNoEl2),
+  let_k_time(WordNoEl2, UniNoEl2, K, El3),
+  El3 = 99,
+  rm_equals(WordNoEl2, El3, WordNoEl3),
+
+  uni_list(WordNoEl3, UniNoEl3),
+  let_k_time(WordNoEl3, UniNoEl3, M, El4),
+  El4 = 100,
+  rm_equals(WordNoEl3, El4, WordNoEl4),
+
+  uni_list(WordNoEl4, WordNoEl4),
+  write_str(Word), nl, !, fail.
+words_t11(_, N, _, N, _, _) :- !, fail.
+words_t11(List, CurLength, CurWord, N, K, M) :-
+  in_list(List, El),
+  append(CurWord, [El], CurWord1),
+  CurLength1 is CurLength + 1,
+  words_t11(List, CurLength1, CurWord1, N, K, M).
+words_t11(List, N, K, M) :- words_t11(List, 0, [], N, K, M).
+
+t11 :-
+  write("Str -> "),
+  read_str(A, _),
+  write("N -> "),
+  read(N),
+  write("K -> "),
+  read(K),
+  write("M -> "),
+  read(M),
+  words_t11(A, N, K, M).
