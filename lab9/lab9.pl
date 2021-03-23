@@ -181,3 +181,41 @@ words_length_5_where_2_a_other_uni(List) :- words_length_5_where_2_a_other_uni(L
 pr3 :-
   read_str(A, _),
   words_length_5_where_2_a_other_uni(A).
+
+% Задание 4
+% количество заданных элементов в листе
+count_let_in_list([], _, Count, Count) :- !.
+count_let_in_list([H|T], El, CurCount, Count) :-
+  (H = El ->
+  CurCount1 is CurCount + 1;
+  CurCount1 is CurCount),
+  count_let_in_list(T, El, CurCount1, Count).
+count_let_in_list(List, El, Count) :- count_let_in_list(List, El, 0, Count).
+
+% в листе есть буква, которая повторяется 2 раза
+let_2_time(_, [], _) :- !, fail.
+let_2_time(List, [UniH|UniT], El) :-
+  count_let_in_list(List, UniH, Count),
+  (Count = 2 ->
+  (El = UniH, true);
+  let_2_time(List, UniT, El)).
+
+% все слова длины 5, в которых одна буква повторяется 2 раза, остальные буквы не повторяются
+words_length_5_where_2_let_other_uni(_, 5, Word) :-
+  uni_list(Word, Uni),
+  let_2_time(Word, Uni, El),
+  in_list_exclude(Word, El, Word1),
+  in_list_exclude(Word1, El, Word2),
+  uni_list(Word2, Word2),
+  write_str(Word), nl, !, fail.
+words_length_5_where_2_let_other_uni(_, 5, _) :- !, fail.
+words_length_5_where_2_let_other_uni(List, CurLength, CurWord) :-
+  in_list(List, El),
+  append(CurWord, [El], CurWord1),
+  CurLength1 is CurLength + 1,
+  words_length_5_where_2_let_other_uni(List, CurLength1, CurWord1).
+words_length_5_where_2_let_other_uni(List) :- words_length_5_where_2_let_other_uni(List, 0, []).
+
+pr4 :-
+  read_str(A, _),
+  words_length_5_where_2_let_other_uni(A).
