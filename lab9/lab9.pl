@@ -244,3 +244,36 @@ words_length_6_where_2_let_2_time_other_uni(List) :- words_length_6_where_2_let_
 pr5 :-
   read_str(A, _),
   words_length_6_where_2_let_2_time_other_uni(A).
+
+% Задание 6
+% в листе есть буква, которая повторяется 3 раза
+let_3_time(_, [], _) :- !, fail.
+let_3_time(List, [UniH|UniT], El) :-
+  count_let_in_list(List, UniH, Count),
+  (Count = 3 ->
+  (El = UniH, true);
+  let_3_time(List, UniT, El)).
+
+% все слова длины 7, в которых 1 буква повторяется 2 раза, 1 буква 3 раза, остальные не повторяются
+words_length_7_where_1let_2_2let_3_other_uni(_, 7, Word) :-
+  uni_list(Word, Uni),
+  let_2_time(Word, Uni, El1),
+  in_list_exclude(Word, El1, Word1),
+  in_list_exclude(Word1, El1, WordNoEl1),
+  uni_list(WordNoEl1, UniNoEl1),
+  let_3_time(WordNoEl1, UniNoEl1, El2),
+  in_list_exclude(WordNoEl1, El2, Word2),
+  in_list_exclude(Word2, El2, WordNoEl2),
+  uni_list(WordNoEl2, WordNoEl2),
+  write_str(Word), nl, !, fail.
+words_length_7_where_1let_2_2let_3_other_uni(_, 7, _) :- !, fail.
+words_length_7_where_1let_2_2let_3_other_uni(List, CurLength, CurWord) :-
+  in_list(List, El),
+  append(CurWord, [El], CurWord1),
+  CurLength1 is CurLength + 1,
+  words_length_7_where_1let_2_2let_3_other_uni(List, CurLength1, CurWord1).
+words_length_7_where_1let_2_2let_3_other_uni(List) :- words_length_7_where_1let_2_2let_3_other_uni(List, 0, []).
+
+pr6 :-
+  read_str(A, _),
+  words_length_7_where_1let_2_2let_3_other_uni(A).
