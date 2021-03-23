@@ -317,3 +317,23 @@ words_length_9_where_2let_2_1let_3_other_uni(List) :- words_length_9_where_2let_
 pr7 :-
   read_str(A, _),
   words_length_9_where_2let_2_1let_3_other_uni(A).
+
+% Задание 8
+% все слова длины 4, в которых больше 2 букв a
+words_length_4_where_more_2_a(_, Count, 4, Word) :-
+  Count > 2,
+  write_str(Word), nl, !, fail.
+words_length_4_where_more_2_a(_, _, 4, _) :- !, fail.
+words_length_4_where_more_2_a(List, CurCount, CurLength, CurWord) :-
+  in_list(List, El),
+  (El = 97 ->
+  CurCount1 is CurCount + 1;
+  CurCount1 is CurCount),
+  append(CurWord, [El], CurWord1),
+  CurLength1 is CurLength + 1,
+  words_length_4_where_more_2_a(List, CurCount1, CurLength1, CurWord1).
+words_length_4_where_more_2_a(List) :- words_length_4_where_more_2_a(List, 0, 0, []).
+
+pr8 :-
+  read_str(A, _),
+  words_length_4_where_more_2_a(A).
