@@ -17,6 +17,7 @@ r_str(X, A, B, N, K) :-
 write_str([]) :- !.
 write_str([H|Tail]) :- put(H), write_str(Tail).
 
+% Задание 1
 % все размещения с повторениями по k элементов
 build_all_razm_p :-
   read_str(A, _),
@@ -86,3 +87,18 @@ pr_sochet_p :-
   read(K),
   sochet_p(B, K, A),
   write_str(B), nl, fail.
+
+% Задание 2
+words_length_5_where_2_a(_, Count, 5, Word) :-
+  Count = 2,
+  write_str(Word), nl, !, fail.
+words_length_5_where_2_a(_, _, 5, _) :- !, fail.
+words_length_5_where_2_a(List, CurCount, CurLength, CurWord) :-
+  in_list(List, El),
+  (El = 97 ->
+  CurCount1 is CurCount + 1;
+  CurCount1 is CurCount),
+  append(CurWord, [El], CurWord1),
+  CurLength1 is CurLength + 1,
+  words_length_5_where_2_a(List, CurCount1, CurLength1, CurWord1).
+words_length_5_where_2_a(List) :- words_length_5_where_2_a(List, 0, 0, []).
