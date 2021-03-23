@@ -357,3 +357,30 @@ words_length_7_where_more_2_a(List) :- words_length_7_where_more_2_a(List, 0, 0,
 pr9 :-
   read_str(A, _),
   words_length_7_where_more_2_a(A).
+
+% Задание 10
+% проверяем, 4 ли различных буквы в слове
+check_4_letters_in_word([], [], 0) :- !.
+check_4_letters_in_word(_, [], 0) :- !, fail.
+check_4_letters_in_word(List, [UniH|UniT], Count) :-
+  Count1 is Count - 1,
+  rm_equals(List, UniH, List1),
+  check_4_letters_in_word(List1, UniT, Count1).
+
+% все слова длины 7, в которых ровно 4 различных буквы
+words_length_7_where_4_lets(_, 7, Word) :-
+  uni_list(Word, Uni),
+  check_4_letters_in_word(Word, Uni, 4),
+
+  write_str(Word), nl, !, fail.
+words_length_7_where_4_lets(_, 7, _) :- !, fail.
+words_length_7_where_4_lets(List, CurLength, CurWord) :-
+  in_list(List, El),
+  append(CurWord, [El], CurWord1),
+  CurLength1 is CurLength + 1,
+  words_length_7_where_4_lets(List, CurLength1, CurWord1).
+words_length_7_where_4_lets(List) :- words_length_7_where_4_lets(List, 0, []).
+
+pr10 :-
+  read_str(A, _),
+  words_length_7_where_4_lets(A).
