@@ -146,28 +146,38 @@ pr_geniuses :- Geniuses = [_, _, _, _],
 
 		write(Geniuses), !.
 
-% Задание 7, место - имя - национальность - спорт - лучше кого играет
+% Задание 7, место - имя - национальность - спорт
 pr_universiade :- Universiade = [_, _, _],
 
-		in_list(Universiade, [1, _, _, cricket, _]),
-		in_list(Universiade, [2, _, _, _, _]),
-		in_list(Universiade, [3, _, _, _, _]),
-		in_list(Universiade, [_, _, _, tennis, _]),
-		in_list(Universiade, [_, _, american, _, _]),
+		in_list(Universiade, [1, _, _, _]),
+		in_list(Universiade, [2, _, _, _]),
+		in_list(Universiade, [3, _, _, _]),
 
-		in_list(Universiade, [_, michael, _, basketball, _]),
-		in_list(Universiade, [_, saymon, israel, _, _]),
+		in_list(Universiade, [_, michael, _, _]),
+		in_list(Universiade, [_, saymon, _, _]),
+		in_list(Universiade, [_, richard, _, _]),
 
-		not(in_list(Universiade, [_, saymon, _, tennis, _])),
-		not(in_list(Universiade, [_, michael, american, _, _])),
+		in_list(Universiade, [_, _, american, _]),
+		in_list(Universiade, [_, _, israel, _]),
+		in_list(Universiade, [_, _, australian, _]),
 
-		sleva_next([_, _, american, _, _], [_, michael, _, _, _], Universiade),
-		sleva_next([_, _, _, tennis, _], [_, saymon, _, _, _], Universiade),
+		in_list(Universiade, [_, _, _, cricket]),
+		in_list(Universiade, [_, _, _, tennis]),
+		in_list(Universiade, [_, _, _, basketball]),
+
+		in_list(Universiade, [_, michael, _, basketball]),
+		not(in_list(Universiade, [_, michael, american, _])),
+
+		in_list(Universiade, [_, saymon, israel, _]),
+		not(in_list(Universiade, [_, saymon, _, tennis])),
+
+		in_list(Universiade, [1, _, _, cricket]),
 		
-		in_list(Universiade, [_, Name, australian, _, _]),
-		in_list(Universiade, [_, richard, _, Sport, _]),
+		in_list(Universiade, [_, Name, australian, _]),
+		in_list(Universiade, [_, richard, _, Sport]),
 
-		write(Universiade), !.
+		write(Universiade), nl,
+		write(Name), nl, write(Sport), !.
 
 % Задание 8, имя - инструмент - камень - срок заточения - труднее всего работать заступом
 pr_gnomes :-
