@@ -122,3 +122,42 @@ coprimeNums(SumOfSD, CurDel)
 ), CurDel1 is CurDel - 1,
 countNumsT15(Num, CurDel1, CurCount1, Count).
 countNumsT15N(Num, Count) :- countNumsT15(Num, Num, 0, Count).
+
+% Задание 16
+% бегаем по сумме (Sum = неуд условию, t16f2 ->)
+t16f1(CurSum, Sum) :-
+  CurSum1 is CurSum + 2,
+  (simpleNumN(CurSum) ->
+  t16f1(CurSum1, Sum);
+  ((t16f2(CurSum, 1, Simple),
+  Simple \= -1) ->
+  t16f1(CurSum1, Sum);
+  Sum = CurSum)), !.
+
+% бегаем по простым (если t16f3 = false, вызываем также t16f2 + 2
+t16f2(CurSum, CurSimple, Simple) :-
+  CurSimple1 is CurSimple + 2,
+  (CurSimple >= CurSum ->
+  Simple = -1;
+  (simpleNumN(CurSimple) ->
+  ((t16f3(CurSum, CurSimple, 1, Square),
+  Square \= -1) ->
+  Simple = CurSimple;
+  t16f2(CurSum, CurSimple1, Simple));
+  t16f2(CurSum, CurSimple1, Simple))), !.
+
+% бегаем по квадратам чисел
+t16f3(CurSum, CurSimple, CurSquare, Square) :-
+  CurSquare1 is CurSquare + 1,
+  LocalSum is CurSimple + 2 * CurSquare * CurSquare,
+  (CurSum = LocalSum ->
+  Square = CurSquare;
+  (CurSum < LocalSum ->
+  Square = -1;
+  t16f3(CurSum, CurSimple, CurSquare1, Square))), !.
+
+t16 :-
+  writeln("Wait 1 min..."),
+  t16f1(1, X),
+  write("Answer => "),
+  write(X).
