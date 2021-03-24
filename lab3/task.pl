@@ -80,15 +80,30 @@ countDels(Num, CurDel, CurCount, Count) :- (Num mod CurDel =:= 0 -> CurCount1 is
 countDelsN(Num, Count) :- countDels(Num, Num, 0, Count).
 
 % Задание 13
-colatz(1, 1) :- !.
-colatz(2, 2) :- !.
-colatz(X, N) :- X > 2, X mod 2 =:= 0, X1 is (X // 2), X =\= 1, colatz(X1, R), N is R + 1.
-colatz(X, N) :- X > 2, X mod 2 =\= 0, X1 is (3 * X + 1), X =\= 1, colatz(X1, R), N is R + 1.
+collatz(1, Length, Length) :- !.
+collatz(Num, CurLength, Length) :-
+  CurLength1 is CurLength + 1,
+  (0 is Num mod 2 ->
+  Num1 is Num div 2;
+  Num1 is Num * 3 + 1),
+  collatz(Num1, CurLength1, Length).
+collatz(Num, Length) :- collatz(Num, 0, Length).
 
-colatzN(Max, Max, 10000) :- !.
-% N -текущая длина цепочки, Max - максимальная
-colatzN(Max, MaxN, Num) :- Num1 is (Num + 1), colatz(Num1, N), (N > Max -> Max1 is N, colatzN(Max1, MaxN, Num1); colatzN(Max, MaxN, Num1)).
-colatzN1(Max, MaxN, Num):- colatzN(Max, MaxN, Num), write(MaxN).
+% Index - текущее число, CurMax - текущая длина цепочки, Max - максимальная
+collatzMore(10000, Max, Max) :- !.
+collatzMore(Index, CurMax, Max) :-
+  Index1 is Index + 1,
+  collatz(Index, Length),
+  (Length > CurMax ->
+  CurMax1 is Length;
+  CurMax1 is CurMax),
+  collatzMore(Index1, CurMax1, Max).
+collatzMore(Max) :- collatzMore(1, 0, Max).
+
+t13 :-
+  collatzMore(Max),
+  write("Max length of line => "),
+  write(Max).
 
 % Задание 14
 % рекурсия вверх
