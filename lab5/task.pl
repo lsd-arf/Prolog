@@ -44,7 +44,6 @@ pr_ein :- Houses = [_, _ ,_ ,_ ,_],
 		in_list(Houses, [_, japan, _, _, parlament]),
 		next_to([_, norway, _, _, _], [blue, _, _, _, _], Houses),
 
-
 		in_list(Houses, [_, WHO1, water, _, _]),
 		in_list(Houses, [_, WHO2, _, zebra, _]),
 		write(Houses),
@@ -112,8 +111,8 @@ pr_containers :- Containers = [_, _, _, _],
 		not(in_list(Containers, [butylka, voda])),
 		not(in_list(Containers, [butylka, moloko])),
 
-		sprava_next([kuvshin, _], [_, limonad], Containers),
-		sprava_next([_, limonad], [_, kvas], Containers),
+		next_to([_, limonad], [kuvshin, _], Containers),
+		next_to([_, limonad], [_, kvas], Containers),
 
 		not(in_list(Containers, [banka, limonad])),
 		not(in_list(Containers, [banka, voda])),
@@ -123,21 +122,27 @@ pr_containers :- Containers = [_, _, _, _],
 
 		write(Containers), !.
 
-% Задание 6, фамилия - деятельность - где были вечером - позировали художнику/о них пишут повесть
+% Задание 6, фамилия - деятельность
 pr_geniuses :- Geniuses = [_, _, _, _],
 
-		in_list(Geniuses, [voronov, _, concert, writer]),
-		in_list(Geniuses, [pavlov, _, _, artist]),
-		in_list(Geniuses, [levitskiy, _, concert, _]),
-		in_list(Geniuses, [saharov, _, _, writer]),
+		in_list(Geniuses, [voronov, _]),
+		in_list(Geniuses, [pavlov, _]),
+		in_list(Geniuses, [levitskiy, _]),
+		in_list(Geniuses, [saharov, _]),
 
-		in_list(Geniuses, [_, dancer, _, _]),
-		in_list(Geniuses, [_, artist, _, _]),
-		in_list(Geniuses, [_, singer, concert, _]),
-		in_list(Geniuses, [_, writer, _, artist]),
+		in_list(Geniuses, [_, dancer]),
+		in_list(Geniuses, [_, artist]),
+		in_list(Geniuses, [_, singer]),
+		in_list(Geniuses, [_, writer]),
 
-		not(in_list(Geniuses, [pavlov, _, writer, _])),
-		not(in_list(Geniuses, [levitskiy, _, singer, _])),
+		not(in_list(Geniuses, [voronov, singer])),
+		not(in_list(Geniuses, [levitskiy, singer])),
+
+		not(in_list(Geniuses, [pavlov, writer])),
+		not(in_list(Geniuses, [pavlov, artist])),
+
+		not(in_list(Geniuses, [saharov, writer])),
+		not(in_list(Geniuses, [voronov, writer])),
 
 		write(Geniuses), !.
 
