@@ -179,35 +179,63 @@ pr_universiade :- Universiade = [_, _, _],
 		write(Universiade), nl,
 		write(Name), nl, write(Sport), !.
 
-% Задание 8, имя - инструмент - камень - срок заточения - труднее всего работать заступом
+% Задание 8, имя - инструмент - камень - срок заточения
 pr_gnomes :-
 	Gnomes = [_, _, _, _, _],
 
-	in_list(Gnomes, [_, _, rubin, _, _]),
-	in_list(Gnomes, [_, _, _, 80, _]),
-	in_list(Gnomes, [_, _, _, 131, _]),
-	in_list(Gnomes, [_, _, _, 159, _]),
-	in_list(Gnomes, [_, _, _, 176, _]),
-	in_list(Gnomes, [_, _, _, 202, _]),
-	%sprava_next([_, _, _, 80, _], [_, _, _, 131, _], Gnomes),
-	%sprava_next([_, _, _, 131, _], [_, _, _, 159, _], Gnomes),
-	%sprava_next([_, _, _, 159, _], [_, _, _, 176, _], Gnomes),
-	%sprava_next([_, _, _, 176, _], [_, _, _, 202, _], Gnomes),
-	sprava_next([_, _, sapfir, _, _], [_, kail, _, _, 0], Gnomes),
-	in_list(Gnomes, [dryhly, _, _, _, _]),
-	sprava_next([_, _, _, 131, _], [_, _, almaz, _, _], Gnomes),
-	in_list(Gnomes, [_, zastup, _, _, 1]),
-	sprava_next([_, turbobur, _, _, 0], [brykly, _, _, _, _], Gnomes),
-	in_list(Gnomes, [brykly, _, _, Sbrykly, _]),
-	in_list(Gnomes, [_, _, izumrud, Sizumrud, _]),
-	in_list(Gnomes, [figli, _, _, Sfigli, _]),
-	not(in_list(Gnomes, [figli, _, _, 80, _])),
-	%in_list(Gnomes, [dryhly, _, _, 202, _]),
+	in_list(Gnomes, [_, _, _, 80]),
+	in_list(Gnomes, [_, _, _, 131]),
+	in_list(Gnomes, [_, _, _, 159]),
+	in_list(Gnomes, [_, _, _, 176]),
+	in_list(Gnomes, [_, _, _, 202]),
+
+	in_list(Gnomes, [_, _, rubin, _]),
+	in_list(Gnomes, [_, _, sapfir, _]),
+	in_list(Gnomes, [_, _, almaz, _]),
+	in_list(Gnomes, [_, _, izumrud, _]),
+	in_list(Gnomes, [_, _, agat, _]),
+
+	in_list(Gnomes, [_, kail, _, _]),
+	in_list(Gnomes, [_, zastup, _, _]),
+	in_list(Gnomes, [_, trubobur, _, _]),
+	in_list(Gnomes, [_, kirka, _, _]),
+	in_list(Gnomes, [_, molot, _, _]),
+
+	in_list(Gnomes, [dryhly, _, _, _]),
+	in_list(Gnomes, [brykly, _, _, _]),
+	in_list(Gnomes, [figli, _, _, _]),
+	in_list(Gnomes, [zvyakli, _, _, _]),
+	in_list(Gnomes, [kvakli, _, _, _]),
+
+	not(in_list(Gnomes, [_, kail, sapfir, _])),
+	%sprava_next([_, _, sapfir, _], [_, kail, _, _], Gnomes),
+
+	not(in_list(Gnomes, [_, _, almaz, 131])),
+	%sprava_next([_, _, _, 131], [_, _, almaz, _], Gnomes),
+
+	not(in_list(Gnomes, [brykly, trubobur, _, _])),
+	%sprava_next([_, trubobur, _, _], [brykly, _, _, _], Gnomes),
+	not(in_list(Gnomes, [brykly, _, izumrud, _])),
+	not(in_list(Gnomes, [_, trubobur, izumrud, _])),
+	in_list(Gnomes, [brykly, _, _, Sbrykly]),
+	in_list(Gnomes, [_, _, izumrud, Sizumrud]),
 	Sbrykly < Sizumrud,
+	%sprava_next([brykly, _, _, _], [_, _, izumrud, _], Gnomes),
+
+	not(in_list(Gnomes, [figli, _, izumrud, _])),
+	in_list(Gnomes, [figli, _, _, Sfigli]),
 	Sfigli < Sizumrud,
-	not(in_list(Gnomes, [zvyakli, _, sapfir, _, _])),
-	sleva_next([_, _, agat, _, _], [zvyakli, _, _, _, _], Gnomes),
-	sprava_next([_, kirka, _, _, 0], [kvakli, _, _, _, _], Gnomes),
-	sleva_next([_, molot, almaz, _, 0], [kvakli, _, _, _, _], Gnomes),
+	not(in_list(Gnomes, [figli, _, _, 80])),
+	%sprava_next([figli, _, _, _], [_, _, izumrud, _], Gnomes),
+
+	not(in_list(Gnomes, [zvyakli, _, sapfir, _])),
+	not(in_list(Gnomes, [zvyakli, _, agat, _])),
+	%sprava_next([zvyakli, _, _, _], [_, _, agat, _], Gnomes),
+
+	not(in_list(Gnomes, [kvakli, kirka, _, _])),
+	not(in_list(Gnomes, [kvakli, molot, _, _])),
+	in_list(Gnomes, [_, molot, almaz, _]),
+	%sprava_next([_, kirka, _, _], [kvakli, _, _, _], Gnomes),
+	%sprava_next([kvakli, _, _, _], [_, molot, _, _], Gnomes),
 
 	write(Gnomes), !.
