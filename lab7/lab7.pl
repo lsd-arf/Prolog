@@ -623,9 +623,9 @@ task20 :-
 % задача в целом:
 % если символы не равны, то кидаем символ из S1 в слово
 % иначе обнуляем слово и кидаем в список, если оно непустое
-read_words_which_split_by_chrs([], _, Word, CurList, List) :- append(CurList, [Word], List), !.
-read_words_which_split_by_chrs(SubStr, [], _, CurList, List) :- append(CurList, [SubStr], List), !.
-read_words_which_split_by_chrs([H1|T1], [H2|T2], Word, CurList, List) :-
+read_words_which_split_by_chrs1([], _, Word, CurList, List) :- append(CurList, [Word], List), !.
+read_words_which_split_by_chrs1(SubStr, [], _, CurList, List) :- append(CurList, [SubStr], List), !.
+read_words_which_split_by_chrs1([H1|T1], [H2|T2], Word, CurList, List) :-
   (H1 = H2 ->
   ((Word \= [] ->
   (append(CurList, [Word], CurList1),
@@ -636,16 +636,31 @@ read_words_which_split_by_chrs([H1|T1], [H2|T2], Word, CurList, List) :-
   CurList1 = CurList,
   Flag = 1)),
   (Flag = 0 ->
-  read_words_which_split_by_chrs(T1, T2, Word1, CurList1, List);
-  read_words_which_split_by_chrs(T1, [H2|T2], Word1, CurList1, List)).
-read_words_which_split_by_chrs(S1, S2, List) :- read_words_which_split_by_chrs(S1, S2, [], [], List).
+  read_words_which_split_by_chrs1(T1, T2, Word1, CurList1, List);
+  read_words_which_split_by_chrs1(T1, [H2|T2], Word1, CurList1, List)).
+read_words_which_split_by_chrs1(S1, S2, List) :- read_words_which_split_by_chrs1(S1, S2, [], [], List).
+
+% вторая реализация (с чтением пустого слова между разделителями)
+read_words_which_split_by_chrs2([], _, Word, CurList, List) :- append(CurList, [Word], List), !.
+read_words_which_split_by_chrs2(SubStr, [], _, CurList, List) :- append(CurList, [SubStr], List), !.
+read_words_which_split_by_chrs2([H1|T1], [H2|T2], Word, CurList, List) :-
+  (H1 = H2 ->
+  (append(CurList, [Word], CurList1),
+  Flag = 0, Word1 = []);
+  (append(Word, [H1], Word1),
+  CurList1 = CurList,
+  Flag = 1)),
+  (Flag = 0 ->
+  read_words_which_split_by_chrs2(T1, T2, Word1, CurList1, List);
+  read_words_which_split_by_chrs2(T1, [H2|T2], Word1, CurList1, List)).
+read_words_which_split_by_chrs2(S1, S2, List) :- read_words_which_split_by_chrs2(S1, S2, [], [], List).
 
 task21 :-
   write("Str1 -> "),
   read_str_nofix(S1),
   write("Str2 -> "),
   read_str_nofix(S2),
-  read_words_which_split_by_chrs(S1, S2, List),
+  read_words_which_split_by_chrs2(S1, S2, List),
   write_list_str(List).
 
 % Задание 22
