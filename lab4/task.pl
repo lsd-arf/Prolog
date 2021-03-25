@@ -259,6 +259,7 @@ ls_alternate([H|T]) :-
 
 % Задача 36
 % получаем первый нечётный элемент
+% здесь нужен fail, т.к в противном случае X = 0, а его нет
 ls_first_odd([], 0) :- write("List hasn\'t odd elements"), fail, !.
 ls_first_odd([H|T], El) :- (H mod 2 =\= 0 -> El is H; ls_first_odd(T, El)).
 
