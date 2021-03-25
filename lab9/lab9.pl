@@ -17,8 +17,10 @@ r_str(X, A, B, N, K) :-
 write_str([]) :- !.
 write_str([H|Tail]) :- put(H), write_str(Tail).
 
-% Р—Р°РґР°РЅРёРµ 1
-% РІСЃРµ СЂР°Р·РјРµС‰РµРЅРёСЏ СЃ РїРѕРІС‚РѕСЂРµРЅРёСЏРјРё РїРѕ k СЌР»РµРјРµРЅС‚РѕРІ
+tell0 :- tell('C:/Users/Владислав/Desktop/Prolog/lab9/out.txt').
+
+% Задание 1
+% все размещения с повторениями по k элементов
 build_all_razm_p :-
   read_str(A, _),
   read(K),
@@ -30,7 +32,7 @@ b_a_rp(A, N, Perm) :-
   N1 is N - 1,
   b_a_rp(A, N1, [El|Perm]).
 
-% РІСЃРµ РїРµСЂРµСЃС‚Р°РЅРѕРІРєРё
+% все перестановки
 build_all_perm:-
   read_str(A, _),
   b_a_p(A, []).
@@ -40,7 +42,7 @@ b_a_p(A, Perm) :-
   in_list_exclude(A, El, A1),
   b_a_p(A1, [El|Perm]).
 
-% РІСЃРµ СЂР°Р·РјРµС‰РµРЅРёСЏ РїРѕ k СЌР»РµРјРµРЅС‚РѕРІ
+% все размещения по k элементов
 build_all_razm:-
   read_str(A, _),
   read(K),
@@ -52,7 +54,7 @@ b_a_r(A, N, Perm) :-
   N1 is N - 1,
   b_a_r(A1, N1, [El|Perm]).
 
-% РІСЃРµ РїРѕРґРјРЅРѕР¶РµСЃС‚РІР°
+% все подмножества
 sub_set([], []).
 sub_set([H|Sub_set], [H|Set]) :- sub_set(Sub_set, Set).
 sub_set(Sub_set, [_|Set]) :- sub_set(Sub_set, Set).
@@ -62,7 +64,7 @@ pr_subset :-
   sub_set(B, A),
   write_str(B), nl, fail.
 
-% РІСЃРµ СЃРѕС‡РµС‚Р°РЅРёСЏ РїРѕ k СЌР»РµРјРµРЅС‚РѕРІ
+% все сочетания по k элементов
 sochet([], 0, _) :- !.
 sochet([H|Sub_set], K, [H|Set]) :-
   K1 is K - 1,
@@ -75,7 +77,7 @@ pr_sochet :-
   sochet(B, K, A),
   write_str(B), nl, fail.
 
-% РІСЃРµ СЃРѕС‡РµС‚Р°РЅРёСЏ СЃ РїРѕРІС‚РѕСЂРµРЅРёСЏРјРё
+% все сочетания с повторениями
 sochet_p([], 0, _) :- !.
 sochet_p([H|Sub_set], K, [H|Set]) :-
   K1 is K - 1,
@@ -88,8 +90,8 @@ pr_sochet_p :-
   sochet_p(B, K, A),
   write_str(B), nl, fail.
 
-% Р—Р°РґР°РЅРёРµ 2
-% РІСЃРµ СЃР»РѕРІР° РґР»РёРЅС‹ 5, РІ РєРѕС‚РѕСЂС‹С… СЂРѕРІРЅРѕ 2 Р±СѓРєРІС‹ a
+% Задание 2
+% все слова длины 5, в которых ровно 2 буквы a
 words_t2(_, Count, 5, Word) :-
   Count = 2,
   write_str(Word), nl, !, fail.
@@ -108,8 +110,8 @@ t2 :-
   read_str(A, _),
   words_t2(A).
 
-% Р—Р°РґР°РЅРёРµ 3
-% РЅРѕРјРµСЂ РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ СЌР»РµРјРµРЅС‚Р°
+% Задание 3
+% номер первого вхождения элемента
 ls_num_el([H], El, CurNum, Num) :- 
   ((H = El) -> 
   Num is CurNum + 1; 
@@ -121,7 +123,7 @@ ls_num_el([H|T], El, CurNum, Num) :-
   ls_num_el(T, El, CurNum1, Num)).
 ls_num_el([H|T], El, Num) :- ls_num_el([H|T], El, 0, Num).
 
-% РЅРѕРјРµСЂ СЌР»РµРјРµРЅС‚Р° РІ СЃРїРёСЃРєРµ
+% номер элемента в списке
 ls_el_at_num([], _, _, _) :- write("Such element isn\'t found"), !.
 ls_el_at_num([_], CurNum, Num, _) :- 
   CurNum1 is CurNum + 1, 
@@ -134,11 +136,11 @@ ls_el_at_num([H|T], CurNum, Num, El) :-
   ls_el_at_num(T, CurNum1, Num, El)).
 ls_el_at_num([H|T], Num, El) :- ls_el_at_num([H|T], 0, Num, El).
 
-% РµСЃС‚СЊ Р»Рё СЌР»РµРјРµРЅС‚ РІ СЃРїРёСЃРєРµ
+% есть ли элемент в списке
 in_ls([H|_], H) :- !.
 in_ls([_|T], El) :- in_ls(T, El).
 
-% РїРѕР»СѓС‡Р°РµРј Р»РёСЃС‚ Р±РµР· СЌР»РµРјРµРЅС‚Р°
+% получаем лист без элемента
 rm_el([_|T], CurList, Num, Num, NewList) :- append(CurList, T, NewList), !.
 rm_el([H|T], CurList, CurNum, Num, NewList) :- 
   append(CurList, [H], CurList1), 
@@ -146,21 +148,21 @@ rm_el([H|T], CurList, CurNum, Num, NewList) :-
   rm_el(T, CurList1, CurNum1, Num, NewList).
 rm_el(List, Num, NewList) :- rm_el(List, [], 1, Num, NewList).
 
-% СѓРґР°Р»РµРЅРёРµ РѕРґРёРЅР°РєРѕРІС‹С… СЃ Р·Р°РґР°РЅРЅС‹Рј СЌР»РµРјРµРЅС‚РѕРІ
+% удаление одинаковых с заданным элементов
 rm_equals(List, El, List) :- not(in_ls(List, El)), !.
 rm_equals(List, El, NewList) :- 
   ls_num_el(List, El, Num), 
   rm_el(List, Num, List1), 
   rm_equals(List1, El, NewList).
 
-% РїРѕР»СѓС‡Р°РµРј Р»РёСЃС‚ РёР· СѓРЅРёРєР°Р»СЊРЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ
+% получаем лист из уникальных элементов
 uni_list([], []) :- !.
 uni_list([H|T], List) :-
   rm_equals(T, H, RmList),
   uni_list(RmList, List1),
   append([H], List1, List).
 
-% РІСЃРµ СЃР»РѕРІР° РґР»РёРЅС‹ 5, РІ РєРѕС‚РѕСЂС‹С… СЂРѕРІРЅРѕ 2 Р±СѓРєРІС‹ a, РѕСЃС‚Р°Р»СЊРЅС‹Рµ Р±СѓРєРІС‹ РЅРµ РїРѕРІС‚РѕСЂСЏСЋС‚СЃСЏ
+% все слова длины 5, в которых ровно 2 буквы a, остальные буквы не повторяются
 words_t3(_, Count, 5, Word) :-
   Count = 2,
   rm_equals(Word, 97, WordNo97),
@@ -181,8 +183,8 @@ t3 :-
   read_str(A, _),
   words_t3(A).
 
-% Р—Р°РґР°РЅРёРµ 4
-% РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РґР°РЅРЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ РІ Р»РёСЃС‚Рµ
+% Задание 4
+% количество заданных элементов в листе
 count_let_in_list([], _, Count, Count) :- !.
 count_let_in_list([H|T], El, CurCount, Count) :-
   (H = El ->
@@ -191,7 +193,7 @@ count_let_in_list([H|T], El, CurCount, Count) :-
   count_let_in_list(T, El, CurCount1, Count).
 count_let_in_list(List, El, Count) :- count_let_in_list(List, El, 0, Count).
 
-% РІ Р»РёСЃС‚Рµ РµСЃС‚СЊ Р±СѓРєРІР°, РєРѕС‚РѕСЂР°СЏ РїРѕРІС‚РѕСЂСЏРµС‚СЃСЏ 2 СЂР°Р·Р°
+% в листе есть буква, которая повторяется 2 раза
 let_2_time(_, [], _) :- !, fail.
 let_2_time(List, [UniH|UniT], El) :-
   count_let_in_list(List, UniH, Count),
@@ -199,7 +201,7 @@ let_2_time(List, [UniH|UniT], El) :-
   (El = UniH, true);
   let_2_time(List, UniT, El)).
 
-% РІСЃРµ СЃР»РѕРІР° РґР»РёРЅС‹ 5, РІ РєРѕС‚РѕСЂС‹С… РѕРґРЅР° Р±СѓРєРІР° РїРѕРІС‚РѕСЂСЏРµС‚СЃСЏ 2 СЂР°Р·Р°, РѕСЃС‚Р°Р»СЊРЅС‹Рµ Р±СѓРєРІС‹ РЅРµ РїРѕРІС‚РѕСЂСЏСЋС‚СЃСЏ
+% все слова длины 5, в которых одна буква повторяется 2 раза, остальные буквы не повторяются
 words_t4(_, 5, Word) :-
   uni_list(Word, Uni),
   let_2_time(Word, Uni, El),
@@ -219,8 +221,8 @@ t4 :-
   read_str(A, _),
   words_t4(A).
 
-% Р—Р°РґР°РЅРёРµ 5
-% РІСЃРµ СЃР»РѕРІР° РґР»РёРЅС‹ 6, РІ РєРѕС‚РѕСЂС‹С… 2 Р±СѓРєРІС‹ РїРѕРІС‚РѕСЂСЏСЋС‚СЃСЏ 2 СЂР°Р·Р°, РѕСЃС‚Р°Р»СЊРЅС‹Рµ РЅРµ РїРѕРІС‚РѕСЂСЏСЋС‚СЃСЏ
+% Задание 5
+% все слова длины 6, в которых 2 буквы повторяются 2 раза, остальные не повторяются
 words_t5(_, 6, Word) :-
   uni_list(Word, Uni),
   let_2_time(Word, Uni, El1),
@@ -244,8 +246,8 @@ t5 :-
   read_str(A, _),
   words_t5(A).
 
-% Р—Р°РґР°РЅРёРµ 6
-% РІ Р»РёСЃС‚Рµ РµСЃС‚СЊ Р±СѓРєРІР°, РєРѕС‚РѕСЂР°СЏ РїРѕРІС‚РѕСЂСЏРµС‚СЃСЏ 3 СЂР°Р·Р°
+% Задание 6
+% в листе есть буква, которая повторяется 3 раза
 let_3_time(_, [], _) :- !, fail.
 let_3_time(List, [UniH|UniT], El) :-
   count_let_in_list(List, UniH, Count),
@@ -253,7 +255,7 @@ let_3_time(List, [UniH|UniT], El) :-
   (El = UniH, true);
   let_3_time(List, UniT, El)).
 
-% РІСЃРµ СЃР»РѕРІР° РґР»РёРЅС‹ 7, РІ РєРѕС‚РѕСЂС‹С… 1 Р±СѓРєРІР° РїРѕРІС‚РѕСЂСЏРµС‚СЃСЏ 2 СЂР°Р·Р°, 1 Р±СѓРєРІР° 3 СЂР°Р·Р°, РѕСЃС‚Р°Р»СЊРЅС‹Рµ РЅРµ РїРѕРІС‚РѕСЂСЏСЋС‚СЃСЏ
+% все слова длины 7, в которых 1 буква повторяется 2 раза, 1 буква 3 раза, остальные не повторяются
 words_t6(_, 7, Word) :-
   uni_list(Word, Uni),
   let_2_time(Word, Uni, El1),
@@ -277,11 +279,11 @@ t6 :-
   read_str(A, _),
   words_t6(A).
 
-% Р—Р°РґР°РЅРёРµ 7
-% РІСЃРµ СЃР»РѕРІР° РґР»РёРЅС‹ 9
-% 2 Р±СѓРєРІС‹ РїРѕРІС‚РѕСЂСЏСЋС‚СЃСЏ 2 СЂР°Р·Р°
-% 1 Р±СѓРєРІР° РїРѕРІС‚РѕСЂСЏРµС‚СЃСЏ 3 СЂР°Р·Р°
-% РѕСЃС‚Р°Р»СЊРЅС‹Рµ Р±СѓРєРІС‹ РЅРµ РїРѕРІС‚РѕСЂСЏСЋС‚СЃСЏ
+% Задание 7
+% все слова длины 9
+% 2 буквы повторяются 2 раза
+% 1 буква повторяется 3 раза
+% остальные буквы не повторяются
 words_t7(_, 9, Word) :-
   uni_list(Word, Uni),
   let_2_time(Word, Uni, El1),
@@ -309,8 +311,8 @@ t7 :-
   read_str(A, _),
   words_t7(A).
 
-% Р—Р°РґР°РЅРёРµ 8
-% РІСЃРµ СЃР»РѕРІР° РґР»РёРЅС‹ 4, РІ РєРѕС‚РѕСЂС‹С… Р±РѕР»СЊС€Рµ 2 Р±СѓРєРІ a
+% Задание 8
+% все слова длины 4, в которых больше 2 букв a
 words_t8(_, Count, 4, Word) :-
   Count > 2,
   write_str(Word), nl, !, fail.
@@ -329,8 +331,8 @@ t8 :-
   read_str(A, _),
   words_t8(A).
 
-% Р—Р°РґР°РЅРёРµ 9
-% РІСЃРµ СЃР»РѕРІР° РґР»РёРЅС‹ 7, РІ РєРѕС‚РѕСЂС‹С… Р±РѕР»СЊС€Рµ 2 Р±СѓРєРІ a
+% Задание 9
+% все слова длины 7, в которых больше 2 букв a
 words_t9(_, Count, 7, Word) :-
   Count > 2,
   write_str(Word), nl, !, fail.
@@ -349,8 +351,8 @@ t9 :-
   read_str(A, _),
   words_t9(A).
 
-% Р—Р°РґР°РЅРёРµ 10
-% РїСЂРѕРІРµСЂСЏРµРј, 4 Р»Рё СЂР°Р·Р»РёС‡РЅС‹С… Р±СѓРєРІС‹ РІ СЃР»РѕРІРµ
+% Задание 10
+% проверяем, 4 ли различных буквы в слове
 check_4_letters_in_word([], [], 0) :- !.
 check_4_letters_in_word(_, [], 0) :- !, fail.
 check_4_letters_in_word(List, [UniH|UniT], Count) :-
@@ -358,7 +360,7 @@ check_4_letters_in_word(List, [UniH|UniT], Count) :-
   rm_equals(List, UniH, List1),
   check_4_letters_in_word(List1, UniT, Count1).
 
-% РІСЃРµ СЃР»РѕРІР° РґР»РёРЅС‹ 7, РІ РєРѕС‚РѕСЂС‹С… СЂРѕРІРЅРѕ 4 СЂР°Р·Р»РёС‡РЅС‹С… Р±СѓРєРІС‹
+% все слова длины 7, в которых ровно 4 различных буквы
 words_t10(_, 7, Word) :-
   uni_list(Word, Uni),
   check_4_letters_in_word(Word, Uni, 4),
@@ -376,8 +378,8 @@ t10 :-
   read_str(A, _),
   words_t10(A).
 
-% Р—Р°РґР°РЅРёРµ 11. Р’Р°СЂРёР°РЅС‚ 12.
-% РІ Р»РёСЃС‚Рµ РµСЃС‚СЊ Р±СѓРєРІР°, РєРѕС‚РѕСЂР°СЏ РїРѕРІС‚РѕСЂСЏРµС‚СЃСЏ K СЂР°Р·
+% Задание 11. Вариант 12.
+% в листе есть буква, которая повторяется K раз
 let_k_time(_, [], _, _) :- !, fail.
 let_k_time(List, [UniH|UniT], K, El) :-
   count_let_in_list(List, UniH, Count),
@@ -385,10 +387,10 @@ let_k_time(List, [UniH|UniT], K, El) :-
   (El = UniH, true);
   let_k_time(List, UniT, K, El)).
 
-% РІСЃРµ СЃР»РѕРІР° РґР»РёРЅС‹ N
-% a, b, c РїРѕРІС‚РѕСЂСЏСЋС‚СЃСЏ K СЂР°Р·
-% d РїРѕРІС‚РѕСЂСЏРµС‚СЃСЏ M СЂР°Р·
-% РѕСЃС‚Р°Р»СЊРЅС‹Рµ Р±СѓРєРІС‹ РЅРµ РїРѕРІС‚РѕСЂСЏСЋС‚СЃСЏ
+% все слова длины N
+% a, b, c повторяются K раз
+% d повторяется M раз
+% остальные буквы не повторяются
 words_t11(_, N, Word, N, K, M) :-
   uni_list(Word, Uni),
   let_k_time(Word, Uni, K, El1),
