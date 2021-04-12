@@ -893,3 +893,79 @@ t8_6 :-
   tell0,
   write_list_str(NewListStr),
   told.
+
+% Задача 9
+% получаем лист из дельт ascii-кодов пар
+list_of_delta_between_ascii([], List, List) :- !.
+list_of_delta_between_ascii([_], List, List) :- !.
+list_of_delta_between_ascii([H|T], CurList, List) :-
+  append(TNoEl, [El], T),
+  Delta1 is H - El,
+  Delta is abs(Delta1),
+  append(CurList, [Delta], CurList1),
+  list_of_delta_between_ascii(TNoEl, CurList1, List).
+list_of_delta_between_ascii(Str, List) :- list_of_delta_between_ascii(Str, [], List).
+
+% сумма элементов списка
+sum_ls_down([], Sum, Sum) :- !.
+sum_ls_down([H|T], CurSum, Sum) :- 
+  CurSum1 is CurSum + H, 
+  sum_ls_down(T, CurSum1, Sum).
+sum_ls_down([H|T], Sum) :- sum_ls_down([H|T], 0, Sum).
+
+% ищем среднее значение дельт ascii-пар
+%avg_of_delta_between_ascii(Deltas, AVG) :-
+%  count_els(Deltas, Count),
+%  sum_ls_down(Deltas, Sum),
+%  AVG is Sum / Count.
+
+% отклонение от заданного ascii-кода
+deviation_from_the_ascii([], _, Deltas, Deltas) :- !.
+deviation_from_the_ascii([H|T], ASCII, CurDeltas, Deltas) :-
+  Delta is H - ASCII,
+  append(CurDeltas, [Delta], CurDeltas1),
+  deviation_from_the_ascii(T, ASCII, CurDeltas1, Deltas).
+deviation_from_the_ascii(List, ASCII, Deltas) :- deviation_from_the_ascii(List, ASCII, [], Deltas).
+
+% получаем квадраты всех отклонений
+sqr_deviation_from_the_ascii([], Deltas, Deltas) :- !.
+sqr_deviation_from_the_ascii([H|T], CurDeltas, Deltas) :-
+  DeltaSqr is H * H,
+  append(CurDeltas, [DeltaSqr], CurDeltas1),
+  sqr_deviation_from_the_ascii(T, CurDeltas1, Deltas).
+sqr_deviation_from_the_ascii(List, DeltaSqrs) :- sqr_deviation_from_the_ascii(List, [], DeltaSqrs).
+
+% вычисляем среднее квадратическое отклонение в строке
+standard_deviation(Str, ASCII, StandardDeviation) :-
+  list_of_delta_between_ascii(Str, Deltas),
+  deviation_from_the_ascii(Deltas, ASCII, Deviation),
+  sqr_deviation_from_the_ascii(Deviation, DeltaSqrs),
+  count_els(DeltaSqrs, Count),
+  sum_ls_down(DeltaSqrs, Sum),
+  Dispersion is Sum / Count,
+  StandardDeviation is sqrt(Dispersion).
+
+% получаем набор средних квадратических отклонений строк
+list_of_standard_deviation([], List, List) :- !.
+list_of_standard_deviation([H|T], CurList, List) :-
+  max_ls_down(H, ASCII),
+  standard_deviation(H, ASCII, StandardDeviation),
+  append(CurList, [StandardDeviation], CurList1),
+  list_of_standard_deviation(T, CurList1, List).
+list_of_standard_deviation(ListStr, List) :- list_of_standard_deviation(ListStr, [], List).
+
+% сортируем
+sort_strs_task8_9(ListStrs, NewListStrs) :-
+  list_of_standard_deviation(ListStrs, ListOfStandardDeviation),
+  sort_strs_by_length(ListStrs, ListOfStandardDeviation, [], NewListStrs).
+
+t8_9 :-
+  see0,
+  read_list_str(ListStr),
+  list_of_standard_deviation(ListStr, ListOfStandardDeviation),
+  write(ListOfStandardDeviation),
+  sort_strs_task8_3(ListStr, NewListStr),
+  seen,
+  tell0,
+  write_list_str(NewListStr),
+  told, !.
