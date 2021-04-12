@@ -808,12 +808,87 @@ sort_strs_task8_3(ListStrs, NewListStrs) :-
   delta_for_every_str(ListStrs, ListDeltas),
   sort_strs_by_length(ListStrs, ListDeltas, [], NewListStrs).
 
-task8_3 :-
+t8_3 :-
   see0,
   read_list_str(ListStr),
   delta_for_every_str(ListStr, Deltas),
   write(Deltas),
   sort_strs_task8_3(ListStr, NewListStr),
+  seen,
+  tell0,
+  write_list_str(NewListStr),
+  told.
+
+% Задача 6
+% получаем набор длин строк
+list_of_count_els([], List, List) :- !.
+list_of_count_els([H|T], CurList, List) :-
+  count_els(H, Count),
+  append(CurList, [Count], CurList1),
+  list_of_count_els(T, CurList1, List).
+list_of_count_els(ListStr, List) :- list_of_count_els(ListStr, [], List).
+
+% получаем строку с максимальной длиной
+str_max_length([], _, Str, Str) :- !.
+str_max_length([H|T], Length, CurStr, Str) :-
+  count_els(H, Count),
+  (Count > Length ->
+  (Length1 is Count,
+  CurStr1 = H);
+  (Length1 is Length,
+  CurStr1 = CurStr)),
+  str_max_length(T, Length1, CurStr1, Str).
+str_max_length(ListStr, Str) :- str_max_length(ListStr, 0, [], Str).
+
+% получаем строку с минимальной длиной
+str_min_length([], _, Str, Str) :- !.
+str_min_length([H|T], Length, CurStr, Str) :-
+  count_els(H, Count),
+  (Count < Length ->
+  (Length1 is Count,
+  CurStr1 = H);
+  (Length1 is Length,
+  CurStr1 = CurStr)),
+  str_min_length(T, Length1, CurStr1, Str).
+str_min_length([H|T], Str) :-
+  count_els(H, Count),
+  str_min_length(T, Count, H, Str).
+
+% получаем строку со средней длиной (это и есть медианное значение, она должна остаться одна)
+% кидаем флаги, 1 - убираем строку с самой большой длиной, 0 - с самой маленькой
+str_avg_length([Str], _, Str) :- !.
+str_avg_length(ListStr, Flag, Str) :-
+  (Flag = 0 ->
+    (
+      str_min_length(ListStr, FoundStr),
+      Flag1 = 1
+    );
+    (
+      str_max_length(ListStr, FoundStr),
+      Flag1 = 0
+    )
+  ),
+  ls_num_el(ListStr, FoundStr, Num),
+  rm_el(ListStr, Num, NewListStr),
+  str_avg_length(NewListStr, Flag1, Str).
+str_avg_length(ListStr, Str) :- str_avg_length(ListStr, 0, Str).
+
+% ищем среднюю, добавляем последней в новый список, удаляем из предыдущего списка
+f_t8_6([], List, List) :- !.
+f_t8_6(ListStr, CurList, List) :-
+  str_avg_length(ListStr, StrAVG),
+  append(CurList, [StrAVG], CurList1),
+  ls_num_el(ListStr, StrAVG, Num),
+  rm_el(ListStr, Num, NewListStr),
+  f_t8_6(NewListStr, CurList1, List).
+f_t8_6(ListStr, List) :- f_t8_6(ListStr, [], List).
+
+t8_6 :-
+  see0,
+  read_list_str(ListStr),
+  list_of_count_els(ListStr, CountEls),
+  write(CountEls),
+  f_t8_6(ListStr, NewListStr),
   seen,
   tell0,
   write_list_str(NewListStr),
