@@ -964,7 +964,52 @@ t8_9 :-
   read_list_str(ListStr),
   list_of_standard_deviation(ListStr, ListOfStandardDeviation),
   write(ListOfStandardDeviation),
-  sort_strs_task8_3(ListStr, NewListStr),
+  sort_strs_task8_9(ListStr, NewListStr),
+  seen,
+  tell0,
+  write_list_str(NewListStr),
+  told, !.
+
+% Задача 10
+% количество зеркальных троек в строке
+mirror_3_in_str([_, _], Count, Count) :- !.
+mirror_3_in_str([_], Count, Count) :- !.
+mirror_3_in_str([], Count, Count) :- !.
+mirror_3_in_str([H1|[H2|[H3|T]]], CurCount, Count) :-
+  (H1 = H3 ->
+  CurCount1 is CurCount + 1;
+  CurCount1 is CurCount),
+  mirror_3_in_str([H2|[H3|T]], CurCount1, Count).
+mirror_3_in_str(Str, Count) :- mirror_3_in_str(Str, 0, Count).
+
+% средняя величина (равна 0, если длина строки меньше 3)
+avg_t8_10(Str, AVG) :-
+  count_els(Str, Count),
+  (Count < 3 ->
+  AVG is 0;
+  (mirror_3_in_str(Str, CountOfMirrors),
+  FullCountOfMirrors is Count - 2,
+  AVG is CountOfMirrors / FullCountOfMirrors)).
+
+% набор средних величин
+list_of_avg_t8_10([], List, List) :- !.
+list_of_avg_t8_10([H|T], CurList, List) :-
+  avg_t8_10(H, AVG),
+  append(CurList, [AVG], CurList1),
+  list_of_avg_t8_10(T, CurList1, List).
+list_of_avg_t8_10(ListStr, List) :- list_of_avg_t8_10(ListStr, [], List).
+
+% сортируем
+sort_strs_task8_10(ListStrs, NewListStrs) :-
+  list_of_avg_t8_10(ListStrs, ListOfAVG),
+  sort_strs_by_length(ListStrs, ListOfAVG, [], NewListStrs).
+
+t8_10 :-
+  see0,
+  read_list_str(ListStr),
+  list_of_avg_t8_10(ListStr, ListOfAVG),
+  write(ListOfAVG),
+  sort_strs_task8_10(ListStr, NewListStr),
   seen,
   tell0,
   write_list_str(NewListStr),
