@@ -92,7 +92,7 @@ t1_2 :-
   seen, write("Count => "), write(Count).
 
 % Задание 1.3
-% файл в виде листа из символов
+% файл в виде листа из символов (составляем из набора строк)
 list_file([], List, List) :- !.
 list_file([H|T], CurList, List) :-
   append(CurList, H, CurList1),
@@ -757,6 +757,63 @@ t7 :-
   list_of_count_words_after_num(ListStr, Counts),
   write(Counts),
   sort_strs_by_count_words_after_num(ListStr, NewListStr),
+  seen,
+  tell0,
+  write_list_str(NewListStr),
+  told.
+
+% Задание 8. Вариант 12.
+% Задача 3
+% ищем наиболее часто встречаемый символ
+ls_most_meet_el(_, [], _, El, El) :- !.
+ls_most_meet_el(List, [UniH|UniT], Count, CurEl, El) :-
+  count_equals(List, UniH, Count1),
+  (Count1 > Count ->
+  (CurEl1 is UniH,
+  Count2 is Count1);
+  (CurEl1 is CurEl,
+  Count2 is Count)),
+  ls_most_meet_el(List, UniT, Count2, CurEl1, El).
+%ls_most_meet_el([], _) :- fail, !.
+ls_most_meet_el([H|T], El) :-
+  uni_list(T, UniList),
+  count_equals([H|T], H, Count),
+  ls_most_meet_el(T, UniList, Count, H, El).
+
+% ищем частоту появления в строке
+% ищем частоту появления в файле
+% ищем разницу частот
+delta_between_regular_in_str_and_in_file(CurStr, FileStr, Delta) :-
+  ls_most_meet_el(CurStr, El),
+  count_equals(CurStr, El, CountElInStr),
+  count_equals(FileStr, El, CountElInFile),
+  count_els(CurStr, CountInStr),
+  count_els(FileStr, CountInFile),
+  AverageInStr is CountElInStr / CountInStr,
+  AverageInFile is CountElInFile / CountInFile,
+  Delta is AverageInStr - AverageInFile.
+
+% получаем дельту для каждой строки (набор дельт)
+delta_for_every_str([], _, Deltas, Deltas) :- !.
+delta_for_every_str([CurStr|ListStr], FileStr, CurDeltas, Deltas) :-
+  delta_between_regular_in_str_and_in_file(CurStr, FileStr, Delta),
+  append(CurDeltas, [Delta], CurDeltas1),
+  delta_for_every_str(ListStr, FileStr, CurDeltas1, Deltas).
+delta_for_every_str(ListStr, Deltas) :-
+  list_file(ListStr, FileStr),
+  delta_for_every_str(ListStr, FileStr, [], Deltas).
+
+% сортируем
+sort_strs_task8_3(ListStrs, NewListStrs) :-
+  delta_for_every_str(ListStrs, ListDeltas),
+  sort_strs_by_length(ListStrs, ListDeltas, [], NewListStrs).
+
+task8_3 :-
+  see0,
+  read_list_str(ListStr),
+  delta_for_every_str(ListStr, Deltas),
+  write(Deltas),
+  sort_strs_task8_3(ListStr, NewListStr),
   seen,
   tell0,
   write_list_str(NewListStr),
